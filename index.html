@@ -4,284 +4,157 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CPE Tecnologia — Convenção de Vendas 2026</title>
-
-<!-- Firebase SDK v9 (compat) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F7F7F5; color: #1A1A1A; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F7F7F5;color:#1A1A1A;min-height:100vh}
+:root{
+  --gold:#F2B400;--gold-dim:#D9A200;--gold-light:#FFF8DC;
+  --graphite:#1A1A1A;--gray2:#F5F5F5;--gray3:#E0E0E0;
+  --white:#FFFFFF;--green:#1E7E34;--red:#C0392B;--blue:#1A5276;--orange:#E67E22;
+}
+.screen{display:none}.screen.active{display:block}
+#screen-home.active{display:flex}
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}
+.justify-between{justify-content:space-between}.justify-center{justify-content:center}
+.gap-6{gap:6px}.gap-8{gap:8px}.gap-12{gap:12px}.wrap{flex-wrap:wrap}
+.flex-1{flex:1}.w-full{width:100%}.text-center{text-align:center}.hidden{display:none!important}
 
-  :root {
-    --gold: #F2B400; --gold-light: #FFF8DC; --gold-dim: #D9A200;
-    --graphite: #1A1A1A; --gray1: #2E2E2E; --gray2: #F5F5F5; --gray3: #E0E0E0;
-    --white: #FFFFFF; --green: #1E7E34; --red: #C0392B; --blue: #1A5276;
-  }
+.card{background:var(--white);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:20px;margin-bottom:12px}
+.badge{display:inline-block;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;background:var(--gold);color:var(--graphite);white-space:nowrap}
+.badge-sm{padding:2px 7px;font-size:11px}
+.badge-green{background:var(--green);color:#fff}
+.badge-gray{background:var(--gray2);color:#666}
+.badge-blue{background:var(--blue);color:#fff}
+.badge-red{background:var(--red);color:#fff}
+.badge-orange{background:var(--orange);color:#fff}
 
-  .screen { display: none; }
-  .screen.active { display: block; }
+.btn{border:none;border-radius:8px;padding:10px 22px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;display:inline-block}
+.btn:hover{opacity:.85}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--gold);color:var(--graphite)}
+.btn-secondary{background:var(--graphite);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-ghost{background:var(--gray2);color:var(--graphite);border:1px solid var(--gray3)}
+.btn-green{background:var(--green);color:#fff}
+.btn-sm{padding:6px 14px;font-size:13px}.btn-lg{padding:14px 22px;font-size:16px}
 
-  .flex { display: flex; }
-  .flex-col { flex-direction: column; }
-  .items-center { align-items: center; }
-  .justify-between { justify-content: space-between; }
-  .justify-center { justify-content: center; }
-  .gap-8 { gap: 8px; }
-  .gap-12 { gap: 12px; }
-  .gap-16 { gap: 16px; }
-  .wrap { flex-wrap: wrap; }
-  .flex-1 { flex: 1; }
-  .w-full { width: 100%; }
-  .text-center { text-align: center; }
-  .hidden { display: none !important; }
+input,select,textarea{border:1.5px solid var(--gray3);border-radius:8px;padding:10px 14px;font-size:14px;width:100%;font-family:inherit;outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
 
-  .card {
-    background: var(--white); border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.08); padding: 20px;
-    margin-bottom: 12px;
-  }
+.header{background:var(--graphite);padding:16px 24px;position:sticky;top:0;z-index:100}
+.header-eyebrow{color:var(--gold);font-weight:900;font-size:11px;letter-spacing:3px;text-transform:uppercase}
+.header-title{color:#fff;font-weight:800;font-size:18px;margin-top:2px}
 
-  .badge {
-    display: inline-block; border-radius: 6px;
-    padding: 3px 10px; font-size: 12px; font-weight: 700;
-    background: var(--gold); color: var(--graphite); white-space: nowrap;
-  }
-  .badge-sm { padding: 2px 7px; font-size: 11px; }
-  .badge-green { background: var(--green); color: var(--white); }
-  .badge-gray { background: var(--gray2); color: #666; }
-  .badge-blue { background: var(--blue); color: var(--white); }
-  .badge-red { background: var(--red); color: var(--white); }
-  .badge-orange { background: #E67E22; color: var(--white); }
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--gray3);background:#F7F7F5;padding:0 24px;overflow-x:auto}
+.tab-btn{padding:10px 16px;border:none;border-bottom:3px solid transparent;background:transparent;color:#888;font-weight:500;cursor:pointer;font-size:13px;white-space:nowrap;transition:color .15s}
+.tab-btn.active{background:#fff;color:var(--graphite);font-weight:800;border-bottom-color:var(--gold)}
 
-  .btn {
-    border: none; border-radius: 8px; padding: 10px 22px;
-    font-size: 15px; font-weight: 700; cursor: pointer;
-    transition: opacity .15s; display: inline-block;
-  }
-  .btn:hover { opacity: .85; }
-  .btn:disabled { opacity: .4; cursor: not-allowed; }
-  .btn-primary { background: var(--gold); color: var(--graphite); }
-  .btn-secondary { background: var(--graphite); color: var(--white); }
-  .btn-danger { background: var(--red); color: var(--white); }
-  .btn-ghost { background: var(--gray2); color: var(--graphite); border: 1px solid var(--gray3); }
-  .btn-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
-  .btn-sm { padding: 6px 14px; font-size: 13px; }
-  .btn-lg { padding: 14px 22px; font-size: 16px; }
+.linha-chip{padding:8px 16px;border-radius:8px;border:2px solid var(--gray3);background:#fff;color:var(--graphite);font-weight:700;cursor:pointer;font-size:13px;transition:all .12s;white-space:nowrap}
+.linha-chip.active{border-color:var(--gold);background:var(--gold)}
+.linha-chip.done{border-color:var(--green);background:var(--green);color:#fff}
 
-  input, select, textarea {
-    border: 1.5px solid var(--gray3); border-radius: 8px;
-    padding: 10px 14px; font-size: 14px; width: 100%;
-    font-family: inherit; outline: none; transition: border-color .15s;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+.progress-bar{height:8px;background:var(--gray3);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .3s}
 
-  .header {
-    background: var(--graphite); padding: 16px 24px;
-    position: sticky; top: 0; z-index: 100;
-  }
-  .header-eyebrow { color: var(--gold); font-weight: 900; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
-  .header-title { color: var(--white); font-weight: 800; font-size: 18px; margin-top: 2px; }
+.nota-btn{width:44px;height:44px;border-radius:8px;border:2px solid var(--gray3);background:#fff;color:#999;font-weight:800;font-size:18px;cursor:pointer;transition:all .12s}
+.nota-btn.selected{border-color:var(--gold);background:var(--gold);color:var(--graphite)}
 
-  /* Indicador de conexão */
-  .conn-dot {
-    width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px;
-  }
-  .conn-online { background: #2ECC71; }
-  .conn-offline { background: #E74C3C; animation: blink 1s infinite; }
-  .conn-syncing { background: #F39C12; animation: blink .5s infinite; }
-  @keyframes blink { 50% { opacity: 0.3; } }
+.rank-medal{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;flex-shrink:0}
+.rank-1{background:#F2B400;color:#fff}.rank-2{background:#C0C0C0;color:#fff}
+.rank-3{background:#CD7F32;color:#fff}.rank-n{background:var(--gray3);color:var(--graphite)}
 
-  /* Tela Inicial */
-  #screen-home {
-    min-height: 100vh; background: var(--graphite);
-    display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
-  }
-  #screen-home.active { display: flex; }
+/* Fase badge */
+.fase-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.5px}
+.fase-config{background:#2A2A2A;color:#888}
+.fase-cadastro{background:#1A3A5C;color:#5DADE2}
+.fase-aprovacao{background:#4A1A00;color:#F39C12}
+.fase-votacao{background:#0A3A1A;color:#2ECC71}
+.fase-resultado{background:#3A0A1A;color:#E91E8C}
 
-  .home-mode-btn {
-    background: #2A2A2A; border: 2px solid #333; border-radius: 14px;
-    padding: 20px 24px; cursor: pointer; text-align: left;
-    transition: border-color .15s, background .15s;
-    display: flex; align-items: center; gap: 16px; width: 100%;
-  }
-  .home-mode-btn:hover { border-color: var(--gold); background: #333; }
-  .home-mode-icon { font-size: 28px; flex-shrink: 0; }
-  .home-mode-label { color: var(--white); font-weight: 800; font-size: 17px; }
-  .home-mode-desc { color: #888; font-size: 13px; margin-top: 2px; }
+/* Conn dot */
+.conn-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.conn-online{background:#2ECC71}.conn-offline{background:#E74C3C;animation:blink 1s infinite}
+.conn-syncing{background:#F39C12;animation:blink .5s infinite}
+@keyframes blink{50%{opacity:.3}}
 
-  /* Config Firebase */
-  .firebase-setup {
-    background: #2A2A2A; border: 2px solid #444; border-radius: 14px;
-    padding: 20px 24px; width: 100%; margin-bottom: 16px;
-  }
-  .firebase-setup label { color: #AAA; font-size: 12px; display: block; margin-bottom: 4px; margin-top: 10px; }
-  .firebase-setup input {
-    background: #1A1A1A; border-color: #444; color: #FFF;
-    font-size: 13px; padding: 8px 12px;
-  }
-  .firebase-setup input:focus { border-color: var(--gold); }
+/* Toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1A1A1A;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:opacity .3s;opacity:0;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1}
 
-  /* Tabs */
-  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--gray3); background: #F7F7F5; padding: 0 24px; }
-  .tab-btn {
-    padding: 10px 18px; border: none; border-bottom: 3px solid transparent;
-    background: transparent; color: #888; font-weight: 500; cursor: pointer; font-size: 14px;
-    transition: color .15s;
-  }
-  .tab-btn.active { background: var(--white); color: var(--graphite); font-weight: 800; border-bottom-color: var(--gold); }
+/* Loader */
+.spinner-overlay{position:fixed;inset:0;background:rgba(26,26,26,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9998}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:48px;height:48px;border:4px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite}
+.spinner-label{color:#AAA;font-size:14px;margin-top:14px}
 
-  .linha-chip {
-    padding: 8px 16px; border-radius: 8px; border: 2px solid var(--gray3);
-    background: var(--white); color: var(--graphite); font-weight: 700; cursor: pointer;
-    font-size: 13px; transition: all .12s; white-space: nowrap;
-  }
-  .linha-chip.active { border-color: var(--gold); background: var(--gold); }
-  .linha-chip.done { border-color: var(--green); background: var(--green); color: var(--white); }
+/* Home */
+#screen-home{min-height:100vh;background:var(--graphite);flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.home-mode-btn{background:#2A2A2A;border:2px solid #333;border-radius:14px;padding:20px 24px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:16px;width:100%}
+.home-mode-btn:hover{border-color:var(--gold);background:#333}
+.home-mode-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+.home-mode-icon{font-size:28px;flex-shrink:0}
+.home-mode-label{color:#fff;font-weight:800;font-size:17px}
+.home-mode-desc{color:#888;font-size:13px;margin-top:2px}
 
-  .progress-bar { height: 8px; background: var(--gray3); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width .3s; }
+/* Ação pendente */
+.acao-pendente{border-left:4px solid var(--orange)}
+.acao-aprovada{border-left:4px solid var(--green)}
+.acao-rejeitada{border-left:4px solid var(--red);opacity:.6}
 
-  .nota-btn {
-    width: 44px; height: 44px; border-radius: 8px; border: 2px solid var(--gray3);
-    background: var(--white); color: #999; font-weight: 800; font-size: 18px;
-    cursor: pointer; transition: all .12s;
-  }
-  .nota-btn.selected { border-color: var(--gold); background: var(--gold); color: var(--graphite); }
+@keyframes pulse-live{0%,100%{box-shadow:0 0 0 0 rgba(46,204,113,.4)}50%{box-shadow:0 0 0 6px rgba(46,204,113,0)}}
+.badge-live{background:#2ECC71;color:#fff;animation:pulse-live 2s infinite}
 
-  .rank-medal {
-    width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center;
-    justify-content: center; font-weight: 900; font-size: 20px; flex-shrink: 0;
-  }
-  .rank-1 { background: #F2B400; color: var(--white); }
-  .rank-2 { background: #C0C0C0; color: var(--white); }
-  .rank-3 { background: #CD7F32; color: var(--white); }
-  .rank-n { background: var(--gray3); color: var(--graphite); }
-
-  /* Toast */
-  #toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: #1A1A1A; color: #FFF; padding: 12px 24px; border-radius: 10px;
-    font-size: 14px; font-weight: 600; z-index: 9999;
-    box-shadow: 0 4px 20px rgba(0,0,0,.3);
-    transition: opacity .3s; opacity: 0; pointer-events: none;
-  }
-  #toast.show { opacity: 1; }
-
-  /* Loader */
-  .spinner-overlay {
-    position: fixed; inset: 0; background: rgba(26,26,26,.85);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 9998;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner {
-    width: 48px; height: 48px; border: 4px solid var(--gold);
-    border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;
-  }
-  .spinner-label { color: #AAA; font-size: 14px; margin-top: 14px; }
-
-  /* Live badge pulsante */
-  @keyframes pulse-live { 0%,100%{box-shadow:0 0 0 0 rgba(46,204,113,.4)} 50%{box-shadow:0 0 0 6px rgba(46,204,113,0)} }
-  .badge-live { background: #2ECC71; color: #fff; animation: pulse-live 2s infinite; }
-
-  @media (max-width: 480px) {
-    .header { padding: 12px 16px; }
-    .card { padding: 16px; }
-    .nota-btn { width: 38px; height: 38px; font-size: 16px; }
-    .grid-2 { grid-template-columns: 1fr !important; }
-  }
+@media(max-width:480px){
+  .header{padding:12px 16px}.card{padding:16px}
+  .nota-btn{width:38px;height:38px;font-size:16px}
+  .grid-2{grid-template-columns:1fr!important}
+}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader" class="spinner-overlay">
   <div class="spinner"></div>
-  <div class="spinner-label" id="loader-msg">Conectando ao servidor…</div>
+  <div class="spinner-label" id="loader-msg">Conectando…</div>
 </div>
-
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- ══════════════════════════════════════════════ TELA: CONFIGURAÇÃO FIREBASE -->
-<div id="screen-config" class="screen">
-  <div style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;padding:24px">
-    <div style="max-width:460px;width:100%">
-      <div style="text-align:center;margin-bottom:28px">
-        <div style="color:#F2B400;font-weight:900;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">CPE Tecnologia</div>
-        <h1 style="color:#fff;font-size:26px;font-weight:900;margin-bottom:6px">Convenção de Vendas</h1>
-        <p style="color:#888;font-size:14px">Configuração do banco de dados em tempo real</p>
-      </div>
-
-      <div class="firebase-setup">
-        <div style="color:#F2B400;font-weight:800;font-size:15px;margin-bottom:4px">🔥 Firebase Realtime Database</div>
-        <div style="color:#888;font-size:13px;margin-bottom:14px">
-          Cole as credenciais do seu projeto Firebase. Os dados serão sincronizados em tempo real para todos os participantes.
-        </div>
-        <label>API Key</label>
-        <input id="cfg-apiKey" placeholder="AIzaSy..." value="">
-        <label>Auth Domain</label>
-        <input id="cfg-authDomain" placeholder="meu-projeto.firebaseapp.com" value="">
-        <label>Database URL (Realtime Database)</label>
-        <input id="cfg-databaseURL" placeholder="https://meu-projeto-default-rtdb.firebaseio.com" value="">
-        <label>Project ID</label>
-        <input id="cfg-projectId" placeholder="meu-projeto" value="">
-        <label>App ID</label>
-        <input id="cfg-appId" placeholder="1:123456789:web:abc..." value="">
-      </div>
-
-      <div style="background:#1E3A1E;border:1px solid #2ECC71;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:#AAA">
-        <div style="color:#2ECC71;font-weight:700;margin-bottom:6px">📋 Como obter as credenciais</div>
-        1. Acesse <strong style="color:#fff">console.firebase.google.com</strong><br>
-        2. Crie um projeto (ex: cpe-convencao-2026)<br>
-        3. Vá em <strong style="color:#fff">Realtime Database → Criar banco</strong> (modo teste)<br>
-        4. Vá em <strong style="color:#fff">Configurações do projeto → Seus apps → Web</strong><br>
-        5. Copie os dados do objeto <code style="color:#F2B400">firebaseConfig</code>
-      </div>
-
-      <button class="btn btn-primary btn-lg w-full" onclick="salvarConfigFirebase()">
-        Conectar e Iniciar →
-      </button>
-
-      <div style="text-align:center;margin-top:12px">
-        <button style="background:none;border:none;color:#555;cursor:pointer;font-size:12px" onclick="usarModoDemo()">
-          Usar modo demo (localStorage sem sincronização)
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════ TELA: HOME -->
+<!-- ══════ HOME ══════ -->
 <div id="screen-home" class="screen">
-  <div style="margin-bottom:8px">
+  <div style="margin-bottom:8px;text-align:center">
     <span style="color:#F2B400;font-weight:900;font-size:13px;letter-spacing:3px;text-transform:uppercase">CPE Tecnologia</span>
   </div>
-  <h1 style="color:#fff;font-size:30px;font-weight:900;margin:0 0 6px;text-align:center">Convenção de Vendas</h1>
-  <p style="color:#AAA;margin:0 0 6px;font-size:15px">Planos de Ação Comercial 2026</p>
-  <div id="home-conn-status" style="display:flex;align-items:center;margin-bottom:36px;font-size:13px;color:#888">
+  <h1 style="color:#fff;font-size:28px;font-weight:900;margin:0 0 4px;text-align:center">Convenção de Vendas 2026</h1>
+  <p style="color:#AAA;margin:0 0 10px;font-size:14px;text-align:center">Planos de Ação Comercial</p>
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:13px;color:#888">
     <span class="conn-dot conn-syncing" id="home-conn-dot"></span>
     <span id="home-conn-label">Conectando…</span>
   </div>
-  <div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px">
+  <div id="home-fase-badge" style="margin-bottom:28px"></div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px">
     <button class="home-mode-btn" onclick="goFacilitador()">
       <span class="home-mode-icon">🎛️</span>
-      <div><div class="home-mode-label">Facilitador</div><div class="home-mode-desc">Gerenciar grupos, ações e votação</div></div>
+      <div><div class="home-mode-label">Facilitador</div><div class="home-mode-desc">Gerenciar grupos, fases e aprovações</div></div>
     </button>
-    <button class="home-mode-btn" onclick="goParticipante()">
-      <span class="home-mode-icon">📝</span>
-      <div><div class="home-mode-label">Participante</div><div class="home-mode-desc">Registrar ações e votar</div></div>
+    <button class="home-mode-btn" id="btn-home-grupo" onclick="goGrupo()">
+      <span class="home-mode-icon">✏️</span>
+      <div><div class="home-mode-label">Grupo</div><div class="home-mode-desc">Cadastrar ações do seu grupo</div></div>
+    </button>
+    <button class="home-mode-btn" id="btn-home-votacao" onclick="goParticipante()">
+      <span class="home-mode-icon">🗳️</span>
+      <div><div class="home-mode-label">Votação</div><div class="home-mode-desc">Avaliar ações dos outros grupos</div></div>
     </button>
     <button class="home-mode-btn" onclick="goResultado()">
       <span class="home-mode-icon">🏆</span>
       <div><div class="home-mode-label">Ranking Final</div><div class="home-mode-desc">Ver resultados e Top 5</div></div>
     </button>
   </div>
-  <div style="margin-top:28px;font-size:11px;color:#444;text-align:center">🔥 cpe-convencao-2026 · Firebase Realtime DB</div>
+  <div style="margin-top:20px;font-size:11px;color:#333;text-align:center">🔥 cpe-convencao-2026 · Firebase Realtime DB</div>
 </div>
 
-<!-- ══════════════════════════════════════════════ TELA: FACILITADOR -->
+<!-- ══════ FACILITADOR ══════ -->
 <div id="screen-facilitador" class="screen">
   <div class="header">
     <div class="flex justify-between items-center">
@@ -290,105 +163,94 @@
         <div class="header-title">Painel de Controle</div>
       </div>
       <div class="flex gap-8 items-center">
-        <span id="fac-conn-badge" class="badge badge-gray" style="font-size:11px">⬤ Conectando</span>
-        <span id="fac-votacao-badge" class="badge badge-gray">🔒 Fechada</span>
+        <span id="fac-fase-badge"></span>
+        <span id="fac-conn-badge" class="badge badge-gray" style="font-size:11px">⬤</span>
         <button class="btn btn-ghost btn-sm" onclick="goHome()">← Início</button>
       </div>
     </div>
   </div>
 
+  <!-- Stats -->
   <div class="flex gap-12 wrap" style="padding:16px 24px">
-    <div class="card flex-1" style="min-width:120px;padding:14px 18px;border-left:4px solid #1A1A1A;margin-bottom:0">
-      <div id="stat-acoes" style="font-size:28px;font-weight:900;color:#1A1A1A">0</div>
-      <div style="font-size:12px;color:#777;margin-top:2px">Ações cadastradas</div>
+    <div class="card flex-1" style="min-width:100px;padding:12px 16px;border-left:4px solid #1A1A1A;margin-bottom:0">
+      <div id="stat-grupos" style="font-size:26px;font-weight:900;color:#1A1A1A">0</div>
+      <div style="font-size:11px;color:#777;margin-top:2px">Grupos</div>
     </div>
-    <div class="card flex-1" style="min-width:120px;padding:14px 18px;border-left:4px solid #1A5276;margin-bottom:0">
-      <div id="stat-partic" style="font-size:28px;font-weight:900;color:#1A5276">0</div>
-      <div style="font-size:12px;color:#777;margin-top:2px">Participantes votaram</div>
+    <div class="card flex-1" style="min-width:100px;padding:12px 16px;border-left:4px solid var(--orange);margin-bottom:0">
+      <div id="stat-pendentes" style="font-size:26px;font-weight:900;color:var(--orange)">0</div>
+      <div style="font-size:11px;color:#777;margin-top:2px">Pendentes</div>
     </div>
-    <div class="card flex-1" style="min-width:120px;padding:14px 18px;border-left:4px solid #1E7E34;margin-bottom:0">
-      <div id="stat-votos" style="font-size:28px;font-weight:900;color:#1E7E34">0</div>
-      <div style="font-size:12px;color:#777;margin-top:2px">Votos registrados</div>
+    <div class="card flex-1" style="min-width:100px;padding:12px 16px;border-left:4px solid var(--green);margin-bottom:0">
+      <div id="stat-aprovadas" style="font-size:26px;font-weight:900;color:var(--green)">0</div>
+      <div style="font-size:11px;color:#777;margin-top:2px">Aprovadas</div>
     </div>
-    <div class="card flex-1" style="min-width:120px;padding:14px 18px;border-left:4px solid #F2B400;margin-bottom:0">
-      <div id="stat-online" style="font-size:28px;font-weight:900;color:#F2B400">–</div>
-      <div style="font-size:12px;color:#777;margin-top:2px">Online agora</div>
+    <div class="card flex-1" style="min-width:100px;padding:12px 16px;border-left:4px solid var(--blue);margin-bottom:0">
+      <div id="stat-votos" style="font-size:26px;font-weight:900;color:var(--blue)">0</div>
+      <div style="font-size:11px;color:#777;margin-top:2px">Votantes</div>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="facTab('acoes',this)">📋 Ações</button>
+    <button class="tab-btn active" onclick="facTab('grupos',this)">👥 Grupos</button>
+    <button class="tab-btn" onclick="facTab('aprovacao',this)">✅ Aprovação</button>
+    <button class="tab-btn" onclick="facTab('fase',this)">🎛️ Fase</button>
     <button class="tab-btn" onclick="facTab('pesos',this)">⚙️ Pesos</button>
-    <button class="tab-btn" onclick="facTab('controle',this)">🎛️ Controle</button>
-    <button class="tab-btn" onclick="facTab('presenca',this)">👥 Presença</button>
+    <button class="tab-btn" onclick="facTab('presenca',this)">📊 Presença</button>
   </div>
 
   <div style="max-width:900px;margin:0 auto;padding:20px 24px">
 
-    <!-- TAB AÇÕES -->
-    <div id="tab-acoes">
-      <div class="flex gap-8 wrap" style="margin-bottom:18px" id="linha-chips-fac"></div>
+    <!-- TAB GRUPOS -->
+    <div id="tab-grupos">
       <div class="card">
-        <div style="font-weight:800;font-size:15px;margin-bottom:14px;color:#1A1A1A" id="fac-linha-titulo">+ Nova Ação</div>
+        <div style="font-weight:800;font-size:15px;margin-bottom:14px">➕ Novo Grupo</div>
+        <div class="flex gap-8">
+          <input id="novo-grupo-nome" placeholder="Nome do grupo (ex: Grupo RTK, Equipe Sul...)" style="flex:1"
+            onkeydown="if(event.key==='Enter')addGrupo()">
+          <button class="btn btn-primary" onclick="addGrupo()">Adicionar</button>
+        </div>
+      </div>
+      <div id="lista-grupos-fac"></div>
+    </div>
+
+    <!-- TAB APROVAÇÃO -->
+    <div id="tab-aprovacao" class="hidden">
+      <div class="flex gap-8 wrap" style="margin-bottom:16px" id="aprovacao-linha-chips"></div>
+      <div id="lista-aprovacao"></div>
+    </div>
+
+    <!-- TAB FASE -->
+    <div id="tab-fase" class="hidden">
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-weight:800;font-size:16px;margin-bottom:8px">🎛️ Fase Atual da Convenção</div>
+        <p style="color:#666;font-size:14px;margin-bottom:18px">Controla o que cada modo pode fazer. Avance as fases na ordem correta.</p>
         <div style="display:grid;gap:10px">
-          <input id="nova-acao" placeholder="✏️ Ação proposta (Verbo + Objeto + Meta) *">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" class="grid-2">
-            <input id="nova-grupo" placeholder="👥 Grupo origem">
-            <input id="nova-segmento" placeholder="🎯 Segmento-alvo">
-            <input id="nova-lider" placeholder="👤 Quem lidera">
-            <input id="nova-resultado" placeholder="📈 Resultado esperado">
+          <div id="fase-btn-config" onclick="setFase('config')" style="cursor:pointer;padding:14px 18px;border-radius:10px;border:2px solid #333;background:#1A1A1A;display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">⚙️</span>
+            <div><div style="color:#fff;font-weight:700">Configuração</div><div style="color:#888;font-size:12px">Facilitador cria grupos. Ninguém mais acessa ainda.</div></div>
           </div>
-          <div class="flex gap-8 wrap">
-            <select id="nova-prazo" style="flex:1">
-              <option value="">⏱ Prazo</option>
-              <option>Curto (30d)</option><option>Médio (90d)</option><option>Longo (180d+)</option>
-            </select>
-            <select id="nova-custo" style="flex:1">
-              <option value="">💰 Custo</option>
-              <option>Baixo</option><option>Médio</option><option>Alto</option>
-            </select>
-            <button class="btn btn-primary" onclick="addAcao()" style="flex:1">Adicionar Ação</button>
+          <div id="fase-btn-cadastro" onclick="setFase('cadastro')" style="cursor:pointer;padding:14px 18px;border-radius:10px;border:2px solid #333;background:#1A1A1A;display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">✏️</span>
+            <div><div style="color:#fff;font-weight:700">Cadastro de Ações</div><div style="color:#888;font-size:12px">Grupos acessam e cadastram suas ações por linha.</div></div>
+          </div>
+          <div id="fase-btn-aprovacao" onclick="setFase('aprovacao')" style="cursor:pointer;padding:14px 18px;border-radius:10px;border:2px solid #333;background:#1A1A1A;display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">✅</span>
+            <div><div style="color:#fff;font-weight:700">Aprovação</div><div style="color:#888;font-size:12px">Facilitador revisa e aprova ações. Cadastro encerrado.</div></div>
+          </div>
+          <div id="fase-btn-votacao" onclick="setFase('votacao')" style="cursor:pointer;padding:14px 18px;border-radius:10px;border:2px solid #333;background:#1A1A1A;display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">🗳️</span>
+            <div><div style="color:#fff;font-weight:700">Votação</div><div style="color:#888;font-size:12px">Participantes avaliam ações dos outros grupos.</div></div>
+          </div>
+          <div id="fase-btn-resultado" onclick="setFase('resultado')" style="cursor:pointer;padding:14px 18px;border-radius:10px;border:2px solid #333;background:#1A1A1A;display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">🏆</span>
+            <div><div style="color:#fff;font-weight:700">Resultado Final</div><div style="color:#888;font-size:12px">Ranking público liberado para todos.</div></div>
           </div>
         </div>
       </div>
-      <div id="lista-acoes"></div>
-    </div>
-
-    <!-- TAB PESOS -->
-    <div id="tab-pesos" class="hidden">
-      <div class="card">
-        <div style="font-weight:800;font-size:16px;margin-bottom:20px">⚙️ Configuração de Pesos</div>
-        <div id="pesos-sliders"></div>
-        <div class="flex justify-between items-center" style="margin-top:20px;padding-top:16px;border-top:1px solid #E0E0E0">
-          <div>
-            <span style="font-weight:800">Total: </span>
-            <span id="pesos-total" style="font-weight:900;font-size:20px;color:#1E7E34">100%</span>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="salvarPesos()">Salvar Pesos</button>
-        </div>
-        <div id="pesos-aviso" class="hidden" style="margin-top:10px;padding:10px;background:#FFF3CD;border-radius:8px;font-size:13px;color:#7B4F00">
-          ⚠️ Os pesos devem somar exatamente 100%
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB CONTROLE -->
-    <div id="tab-controle" class="hidden">
-      <div class="card" style="margin-bottom:14px">
-        <div style="font-weight:800;font-size:16px;margin-bottom:10px">🗳️ Controle da Votação</div>
-        <p style="color:#666;font-size:14px;margin-bottom:16px">Abra a votação para que os participantes possam registrar suas notas. Feche antes de revelar o resultado.</p>
-        <button id="btn-toggle-votacao" class="btn btn-primary" onclick="toggleVotacao()">🔓 Abrir Votação</button>
-      </div>
-      <div class="card" style="margin-bottom:14px">
-        <div style="font-weight:800;font-size:16px;margin-bottom:14px">📊 Status por Linha</div>
-        <div id="status-linhas"></div>
-      </div>
-      <div class="card" style="border-left:4px solid #C0392B">
-        <div style="font-weight:800;font-size:15px;color:#C0392B;margin-bottom:8px">⚠️ Reiniciar Tudo</div>
-        <p style="font-size:13px;color:#666;margin-bottom:12px">Remove todas as ações e votos do servidor. Irreversível.</p>
-        <div id="confirm-reset-area">
-          <button class="btn btn-danger btn-sm" onclick="showConfirmReset()">Reiniciar</button>
-        </div>
+      <div class="card" style="border-left:4px solid var(--red)">
+        <div style="font-weight:800;font-size:15px;color:var(--red);margin-bottom:8px">⚠️ Reiniciar Tudo</div>
+        <p style="font-size:13px;color:#666;margin-bottom:12px">Apaga grupos, ações e votos. Irreversível.</p>
+        <div id="confirm-reset-area"><button class="btn btn-danger btn-sm" onclick="showConfirmReset()">Reiniciar</button></div>
         <div id="confirm-reset-btns" class="hidden flex gap-8">
           <button class="btn btn-ghost btn-sm" onclick="hideConfirmReset()">Cancelar</button>
           <button class="btn btn-danger btn-sm" onclick="resetTudo()">Confirmar — apagar tudo</button>
@@ -396,33 +258,140 @@
       </div>
     </div>
 
+    <!-- TAB PESOS -->
+    <div id="tab-pesos" class="hidden">
+      <div class="card">
+        <div style="font-weight:800;font-size:16px;margin-bottom:20px">⚙️ Pesos dos Critérios</div>
+        <div id="pesos-sliders"></div>
+        <div class="flex justify-between items-center" style="margin-top:20px;padding-top:16px;border-top:1px solid #E0E0E0">
+          <div><span style="font-weight:800">Total: </span><span id="pesos-total" style="font-weight:900;font-size:20px;color:var(--green)">100%</span></div>
+          <button class="btn btn-primary btn-sm" onclick="salvarPesos()">Salvar Pesos</button>
+        </div>
+        <div id="pesos-aviso" class="hidden" style="margin-top:10px;padding:10px;background:#FFF3CD;border-radius:8px;font-size:13px;color:#7B4F00">⚠️ Os pesos devem somar 100%</div>
+      </div>
+    </div>
+
     <!-- TAB PRESENÇA -->
     <div id="tab-presenca" class="hidden">
-      <div class="card">
-        <div style="font-weight:800;font-size:16px;margin-bottom:14px">👥 Participantes Conectados</div>
-        <div id="presenca-lista" style="color:#888;font-size:14px">Nenhum participante online ainda.</div>
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-weight:800;font-size:15px;margin-bottom:14px">📊 Progresso de Votos por Participante</div>
+        <div id="presenca-votos"><p style="color:#AAA;font-size:14px">Nenhum voto registrado ainda.</p></div>
       </div>
       <div class="card">
-        <div style="font-weight:800;font-size:16px;margin-bottom:14px">📊 Progresso de Votos por Participante</div>
-        <div id="presenca-votos"></div>
+        <div style="font-weight:800;font-size:15px;margin-bottom:14px">📋 Ações por Grupo</div>
+        <div id="presenca-grupos"></div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════ TELA: PARTICIPANTE -->
-<div id="screen-participante" class="screen">
-  <!-- Identificação -->
-  <div id="partic-id-screen" style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;padding:24px">
-    <div class="card" style="max-width:400px;width:100%">
+<!-- ══════ GRUPO (CADASTRO DE AÇÕES) ══════ -->
+<div id="screen-grupo" class="screen">
+  <!-- Identificação do grupo -->
+  <div id="grupo-id-screen" style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div class="card" style="max-width:420px;width:100%">
       <div class="text-center" style="margin-bottom:24px">
-        <div style="font-size:40px;margin-bottom:8px">👤</div>
-        <h2 style="color:#1A1A1A">Identificação</h2>
-        <p style="color:#888;font-size:14px;margin-top:8px">Digite seu nome para começar a votar</p>
+        <div style="font-size:40px;margin-bottom:8px">✏️</div>
+        <h2>Cadastro de Ações</h2>
+        <p style="color:#888;font-size:14px;margin-top:8px">Identifique seu grupo e participante</p>
       </div>
-      <input id="partic-nome-input" placeholder="Seu nome completo" style="margin-bottom:14px"
-        onkeydown="if(event.key==='Enter')confirmarNome()">
+      <div style="margin-bottom:10px">
+        <label style="font-size:12px;color:#888;display:block;margin-bottom:4px">Seu grupo</label>
+        <select id="grupo-select" style="margin-bottom:12px">
+          <option value="">Selecione o grupo...</option>
+        </select>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;color:#888;display:block;margin-bottom:4px">Seu nome</label>
+        <input id="grupo-nome-input" placeholder="Nome do participante"
+          onkeydown="if(event.key==='Enter')confirmarGrupo()">
+      </div>
+      <button class="btn btn-primary btn-lg w-full" onclick="confirmarGrupo()">Entrar →</button>
+      <div class="text-center" style="margin-top:12px">
+        <button style="background:none;border:none;color:#888;cursor:pointer;font-size:13px" onclick="goHome()">← Voltar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tela fechada para cadastro -->
+  <div id="grupo-fechado-screen" class="hidden" style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px">
+    <div style="font-size:48px;margin-bottom:16px">🔒</div>
+    <h2 style="color:#fff;margin-bottom:8px">Cadastro não disponível</h2>
+    <p style="color:#888;margin-bottom:24px;text-align:center;max-width:280px" id="grupo-fechado-msg">Aguarde o facilitador abrir a fase de cadastro.</p>
+    <button class="btn btn-ghost" onclick="goHome()">← Voltar</button>
+  </div>
+
+  <!-- Tela de cadastro ativa -->
+  <div id="grupo-cadastro-screen" class="hidden">
+    <div class="header">
+      <div class="flex justify-between items-center" style="margin-bottom:10px">
+        <div>
+          <div class="header-eyebrow">CPE · Cadastro de Ações</div>
+          <div class="header-title" id="grupo-header-nome">Grupo</div>
+        </div>
+        <div class="flex gap-8 items-center">
+          <span id="grupo-conn-badge" class="badge badge-gray" style="font-size:11px">⬤</span>
+          <button class="btn btn-ghost btn-sm" onclick="goHome()">← Início</button>
+        </div>
+      </div>
+      <div class="flex gap-6" id="grupo-linha-chips" style="overflow-x:auto;padding-bottom:4px"></div>
+    </div>
+
+    <div style="max-width:680px;margin:0 auto;padding:20px 16px">
+      <div class="flex justify-between items-center" style="margin-bottom:14px">
+        <h2 style="font-size:17px" id="grupo-linha-titulo">Linha</h2>
+        <span id="grupo-acoes-count" style="font-size:13px;color:#888">0 ações</span>
+      </div>
+
+      <!-- Form nova ação -->
+      <div class="card" style="border:2px solid var(--gold-dim);margin-bottom:20px">
+        <div style="font-weight:800;font-size:14px;margin-bottom:12px;color:#1A1A1A">➕ Nova Ação</div>
+        <div style="display:grid;gap:10px">
+          <input id="g-nova-acao" placeholder="✏️ Ação proposta (Verbo + Objeto + Meta) *">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" class="grid-2">
+            <input id="g-nova-segmento" placeholder="🎯 Segmento-alvo">
+            <input id="g-nova-lider" placeholder="👤 Quem lidera">
+            <input id="g-nova-resultado" placeholder="📈 Resultado esperado">
+            <select id="g-nova-prazo">
+              <option value="">⏱ Prazo</option>
+              <option>Curto (30d)</option><option>Médio (90d)</option><option>Longo (180d+)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary w-full" onclick="addAcaoGrupo()">Adicionar Ação →</button>
+        </div>
+      </div>
+
+      <!-- Lista de ações do grupo nessa linha -->
+      <div id="grupo-acoes-lista"></div>
+
+      <div style="margin-top:16px;padding:12px 16px;background:#FFF8DC;border-radius:10px;font-size:13px;color:#7B4F00;border-left:3px solid var(--gold)">
+        💡 Suas ações ficam <strong>pendentes de aprovação</strong> pelo facilitador antes de entrar na votação.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PARTICIPANTE (VOTAÇÃO) ══════ -->
+<div id="screen-participante" class="screen">
+  <div id="partic-id-screen" style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div class="card" style="max-width:420px;width:100%">
+      <div class="text-center" style="margin-bottom:24px">
+        <div style="font-size:40px;margin-bottom:8px">🗳️</div>
+        <h2>Votação</h2>
+        <p style="color:#888;font-size:14px;margin-top:8px">Identifique-se para votar</p>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:12px;color:#888;display:block;margin-bottom:4px">Seu grupo (você NÃO vota nas ações do próprio grupo)</label>
+        <select id="partic-grupo-select" style="margin-bottom:12px">
+          <option value="">Selecione seu grupo...</option>
+        </select>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;color:#888;display:block;margin-bottom:4px">Seu nome</label>
+        <input id="partic-nome-input" placeholder="Nome completo"
+          onkeydown="if(event.key==='Enter')confirmarNome()">
+      </div>
       <button class="btn btn-primary btn-lg w-full" onclick="confirmarNome()">Entrar e Votar →</button>
       <div class="text-center" style="margin-top:12px">
         <button style="background:none;border:none;color:#888;cursor:pointer;font-size:13px" onclick="goHome()">← Voltar</button>
@@ -430,12 +399,18 @@
     </div>
   </div>
 
-  <!-- Votação -->
+  <div id="partic-fechado-screen" class="hidden" style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px">
+    <div style="font-size:48px;margin-bottom:16px">🔒</div>
+    <h2 style="color:#fff;margin-bottom:8px">Votação não aberta</h2>
+    <p style="color:#888;margin-bottom:24px;text-align:center">Aguarde o facilitador abrir a fase de votação.</p>
+    <button class="btn btn-ghost" onclick="goHome()">← Voltar</button>
+  </div>
+
   <div id="partic-vote-screen" class="hidden">
     <div class="header">
-      <div class="flex justify-between items-center" style="margin-bottom:12px">
+      <div class="flex justify-between items-center" style="margin-bottom:10px">
         <div>
-          <div class="header-eyebrow">CPE · Convenção 2026</div>
+          <div class="header-eyebrow">CPE · Votação 2026</div>
           <div class="header-title" id="partic-nome-header">Participante</div>
         </div>
         <div class="flex gap-8 items-center">
@@ -446,7 +421,6 @@
       </div>
       <div class="flex gap-6" id="partic-linha-chips" style="overflow-x:auto;padding-bottom:4px"></div>
     </div>
-
     <div style="max-width:680px;margin:0 auto;padding:20px 16px">
       <div class="flex justify-between items-center" style="margin-bottom:16px">
         <h2 style="font-size:18px" id="partic-linha-titulo">Linha</h2>
@@ -459,858 +433,908 @@
       </div>
     </div>
   </div>
-
-  <!-- Fechado -->
-  <div id="partic-fechado-screen" class="hidden" style="min-height:100vh;background:#1A1A1A;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px">
-    <div style="font-size:48px;margin-bottom:16px">🔒</div>
-    <h2 style="color:#fff;margin-bottom:8px">Votação não aberta</h2>
-    <p style="color:#888;margin-bottom:24px;text-align:center">Aguarde o facilitador abrir a votação.</p>
-    <button class="btn btn-ghost" onclick="goHome()">← Voltar</button>
-  </div>
 </div>
 
-<!-- ══════════════════════════════════════════════ TELA: RESULTADO -->
+<!-- ══════ RESULTADO ══════ -->
 <div id="screen-resultado" class="screen">
   <div class="header">
-    <div class="flex justify-between items-center" style="margin-bottom:12px">
+    <div class="flex justify-between items-center" style="margin-bottom:10px">
       <div>
         <div class="header-eyebrow">CPE Tecnologia · Ranking Final</div>
         <div class="header-title">🏆 Convenção de Vendas 2026</div>
       </div>
       <div class="flex gap-8 items-center">
         <span id="res-live-badge" class="badge badge-live" style="font-size:11px">● AO VIVO</span>
-        <span id="res-partic-badge" class="badge badge-green">👥 0 participantes</span>
+        <span id="res-partic-badge" class="badge badge-green">👥 0</span>
         <button class="btn btn-ghost btn-sm" onclick="goHome()">← Início</button>
       </div>
     </div>
     <div class="flex gap-6" id="res-linha-chips" style="overflow-x:auto;padding-bottom:4px"></div>
   </div>
-
   <div style="max-width:760px;margin:0 auto;padding:20px 16px">
     <div class="flex justify-between items-center" style="margin-bottom:18px">
       <h2 style="font-size:20px" id="res-linha-titulo">Linha</h2>
       <button id="btn-ver-todas" class="btn btn-ghost btn-sm" onclick="toggleVerTodas()" style="display:none">Ver todas</button>
     </div>
     <div id="res-ranking-lista"></div>
-    <div style="margin-top:20px;padding:14px 16px;background:#fff;border-radius:10px;font-size:12px;color:#888;border-left:3px solid #F2B400" id="res-pesos-rodape"></div>
+    <div style="margin-top:20px;padding:14px 16px;background:#fff;border-radius:10px;font-size:12px;color:#888;border-left:3px solid var(--gold)" id="res-pesos-rodape"></div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 // CONSTANTES
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 const LINHAS = [
-  { id:"RTK",  nome:"Receptores RTK",          emoji:"🛰️" },
-  { id:"DRO",  nome:"Drones",                  emoji:"🚁" },
-  { id:"SLAM", nome:"Laser SLAM",              emoji:"🔵" },
-  { id:"BATI", nome:"Batimetria",              emoji:"🌊" },
-  { id:"SCAN", nome:"Laser Scanner Terrestre", emoji:"📡" },
+  {id:"RTK", nome:"Receptores RTK",          emoji:"🛰️"},
+  {id:"DRO", nome:"Drones",                  emoji:"🚁"},
+  {id:"SLAM",nome:"Laser SLAM",              emoji:"🔵"},
+  {id:"BATI",nome:"Batimetria",              emoji:"🌊"},
+  {id:"SCAN",nome:"Laser Scanner Terrestre", emoji:"📡"},
 ];
 const CRITERIOS = [
-  { id:"IMP", label:"Impacto",    desc:"Impacto no Faturamento",       dica:"1=baixo → 5=alto impacto na receita" },
-  { id:"FAC", label:"Facilidade", desc:"Facilidade de Implementação",  dica:"1=muito difícil → 5=muito fácil" },
-  { id:"URG", label:"Urgência",   desc:"Urgência / Timing",            dica:"1=pode esperar → 5=urgente agora" },
-  { id:"CUS", label:"Custo",      desc:"Custo de Implantação",         dica:"1=caro → 5=barato  ⚠️ invertido" },
+  {id:"IMP",label:"Impacto",   desc:"Impacto no Faturamento",      dica:"1=baixo → 5=alto"},
+  {id:"FAC",label:"Facilidade",desc:"Facilidade de Implementação", dica:"1=difícil → 5=fácil"},
+  {id:"URG",label:"Urgência",  desc:"Urgência / Timing",           dica:"1=pode esperar → 5=urgente"},
+  {id:"CUS",label:"Custo",     desc:"Custo de Implantação",        dica:"1=caro → 5=barato ⚠️inv."},
 ];
-const PESOS_DEFAULT = { IMP:0.35, FAC:0.20, URG:0.20, CUS:0.25 };
-const STORAGE_CFG = "cpe_firebase_cfg";
-const STORAGE_DEMO = "cpe_conv_demo";
+const PESOS_DEFAULT = {IMP:0.35,FAC:0.20,URG:0.20,CUS:0.25};
+const FASES = ['config','cadastro','aprovacao','votacao','resultado'];
 const DB_ROOT = "cpe_convencao_2026";
 
-// ══════════════════════════════════════════════════════════════════════════
-// ESTADO LOCAL
-// ══════════════════════════════════════════════════════════════════════════
-let STATE = {
-  acoes: [], votos: {},
-  pesos: {...PESOS_DEFAULT},
-  votacaoAberta: false,
-  presenca: {}
+const FIREBASE_CFG = {
+  apiKey:            "AIzaSyD-aejWwZXpxPyTljQ0q5l2rVx-JGZ3NdM",
+  authDomain:        "cpe-convencao-2026.firebaseapp.com",
+  databaseURL:       "https://cpe-convencao-2026-default-rtdb.firebaseio.com",
+  projectId:         "cpe-convencao-2026",
+  storageBucket:     "cpe-convencao-2026.firebasestorage.app",
+  messagingSenderId: "489052899313",
+  appId:             "1:489052899313:web:490d74141a9434f72f6650"
 };
 
-let facLinhaAtiva    = "RTK";
-let particLinhaAtiva = "RTK";
-let resLinhaAtiva    = "RTK";
-let particNome       = "";
-let particNotas      = {};
-let particSalvo      = {};
-let resMostrarTodas  = false;
-let modoDemo         = false;
-let pesosTemp        = {...PESOS_DEFAULT};
+// ══════════════════════════════════════════════════════════════════
+// ESTADO
+// ══════════════════════════════════════════════════════════════════
+let STATE = {
+  fase: 'config',          // config | cadastro | aprovacao | votacao | resultado
+  grupos: {},              // {id: {nome}}
+  acoes: {},               // {id: {linha, grupo, grupoNome, acao, status:'pendente'|'aprovada'|'rejeitada', codigo, ...}}
+  votos: {},               // {nomePartic: {acaoId: {IMP,FAC,URG,CUS}}}
+  pesos: {...PESOS_DEFAULT},
+};
 
-// Firebase
-let db         = null;
-let dbRef      = null;
-let connStatus = "offline"; // offline | syncing | online
-let presencaId = null;      // ID único desta sessão
+// Estado local (não vai ao Firebase)
+let db = null, dbRef = null;
+let connStatus = 'offline';
+let meuGrupoId = '', meuGrupoNome = '', meuNome = '';
+let particGrupoId = '', particNome = '';
+let particNotas = {}, particSalvo = {};
+let grupoLinhaAtiva = 'RTK';
+let facAprovacaoLinhaAtiva = 'RTK';
+let particLinhaAtiva = 'RTK';
+let resLinhaAtiva = 'RTK';
+let resMostrarTodas = false;
+let pesosTemp = {...PESOS_DEFAULT};
 
-// ══════════════════════════════════════════════════════════════════════════
-// FIREBASE INIT
-// ══════════════════════════════════════════════════════════════════════════
-function salvarConfigFirebase() {
-  const cfg = {
-    apiKey:      document.getElementById('cfg-apiKey').value.trim(),
-    authDomain:  document.getElementById('cfg-authDomain').value.trim(),
-    databaseURL: document.getElementById('cfg-databaseURL').value.trim(),
-    projectId:   document.getElementById('cfg-projectId').value.trim(),
-    appId:       document.getElementById('cfg-appId').value.trim(),
-  };
-  if (!cfg.apiKey || !cfg.databaseURL) {
-    toast('Preencha ao menos a API Key e a Database URL', 'erro');
-    return;
-  }
-  localStorage.setItem(STORAGE_CFG, JSON.stringify(cfg));
-  iniciarFirebase(cfg);
-}
-
-function iniciarFirebase(cfg) {
-  setLoader(true, 'Conectando ao Firebase…');
+// ══════════════════════════════════════════════════════════════════
+// FIREBASE
+// ══════════════════════════════════════════════════════════════════
+function iniciarFirebase() {
+  setLoader(true,'Conectando ao Firebase CPE…');
   try {
-    // Evita re-inicialização
-    if (firebase.apps.length) {
-      firebase.apps.forEach(a => a.delete());
-    }
-    firebase.initializeApp(cfg);
+    if (firebase.apps.length) firebase.apps.forEach(a=>a.delete());
+    firebase.initializeApp(FIREBASE_CFG);
     db    = firebase.database();
     dbRef = db.ref(DB_ROOT);
 
-    // Monitorar conexão
     db.ref('.info/connected').on('value', snap => {
-      if (snap.val()) {
-        setConnStatus('online');
-        if (presencaId) registrarPresenca();
-      } else {
-        setConnStatus('offline');
-      }
+      setConnStatus(snap.val() ? 'online' : 'offline');
     });
 
-    // Ouvir mudanças no STATE
     dbRef.on('value', snap => {
       const val = snap.val();
       if (val) {
-        STATE = {
-          acoes: val.acoes ? Object.values(val.acoes) : [],
-          votos: val.votos || {},
-          pesos: val.pesos || {...PESOS_DEFAULT},
-          votacaoAberta: val.votacaoAberta || false,
-          presenca: val.presenca || {}
-        };
+        STATE.fase   = val.fase   || 'config';
+        STATE.grupos = val.grupos || {};
+        STATE.acoes  = val.acoes  || {};
+        STATE.votos  = val.votos  || {};
+        STATE.pesos  = val.pesos  || {...PESOS_DEFAULT};
       } else {
-        // Banco vazio: inicializar
-        STATE = { acoes:[], votos:{}, pesos:{...PESOS_DEFAULT}, votacaoAberta:false, presenca:{} };
-        dbRef.set({ pesos: STATE.pesos, votacaoAberta: false });
+        dbRef.set({fase:'config', pesos:PESOS_DEFAULT});
       }
       setLoader(false);
       atualizarUIAtiva();
     });
-
-    showScreen('home');
-    setConnStatus('syncing');
   } catch(e) {
     setLoader(false);
-    toast('Erro ao conectar: ' + e.message, 'erro');
-    console.error(e);
+    toast('Erro Firebase: '+e.message,'erro');
   }
 }
 
-function usarModoDemo() {
-  modoDemo = true;
-  setLoader(false);
-  carregarStateDemo();
-  showScreen('home');
-  setConnStatus('demo');
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// PERSISTÊNCIA
-// ══════════════════════════════════════════════════════════════════════════
-function salvarState() {
-  if (modoDemo) {
-    try { localStorage.setItem(STORAGE_DEMO, JSON.stringify(STATE)); } catch(e) {}
-    return;
-  }
-  if (!dbRef) return;
+function dbSet(path, val) {
+  if (!db) return Promise.resolve();
   setConnStatus('syncing');
-  // Converter array de ações para objeto keyed (Firebase não gosta de arrays)
-  const acoes_obj = {};
-  STATE.acoes.forEach(a => { acoes_obj[a.id] = a; });
-  dbRef.update({
-    acoes: acoes_obj,
-    votos: STATE.votos,
-    pesos: STATE.pesos,
-    votacaoAberta: STATE.votacaoAberta
-  }).then(() => setConnStatus('online'))
-    .catch(e => { setConnStatus('offline'); toast('Erro ao salvar: ' + e.message, 'erro'); });
+  return db.ref(DB_ROOT+'/'+path).set(val)
+    .then(()=>setConnStatus('online'))
+    .catch(e=>{setConnStatus('offline');toast('Erro: '+e.message,'erro');});
+}
+function dbUpdate(path, val) {
+  if (!db) return Promise.resolve();
+  setConnStatus('syncing');
+  return db.ref(DB_ROOT+'/'+path).update(val)
+    .then(()=>setConnStatus('online'))
+    .catch(e=>{setConnStatus('offline');toast('Erro: '+e.message,'erro');});
+}
+function dbRemove(path) {
+  if (!db) return Promise.resolve();
+  return db.ref(DB_ROOT+'/'+path).remove()
+    .catch(e=>toast('Erro: '+e.message,'erro'));
 }
 
-function carregarStateDemo() {
-  try {
-    const raw = localStorage.getItem(STORAGE_DEMO);
-    if (raw) STATE = { ...STATE, ...JSON.parse(raw) };
-  } catch(e) {}
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// PRESENÇA (quem está online)
-// ══════════════════════════════════════════════════════════════════════════
-function registrarPresenca(nome) {
-  if (modoDemo || !db) return;
-  if (!presencaId) presencaId = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  const ref = db.ref(DB_ROOT + '/presenca/' + presencaId);
-  ref.set({ nome: nome || particNome || '(Facilitador)', ts: Date.now() });
-  ref.onDisconnect().remove();
-}
-
-function removerPresenca() {
-  if (modoDemo || !db || !presencaId) return;
-  db.ref(DB_ROOT + '/presenca/' + presencaId).remove();
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// STATUS DE CONEXÃO
-// ══════════════════════════════════════════════════════════════════════════
-function setConnStatus(status) {
-  connStatus = status;
-  const dots  = document.querySelectorAll('.conn-dot');
-  const label = document.getElementById('home-conn-label');
-  dots.forEach(d => {
-    d.className = 'conn-dot';
-    if (status === 'online') d.classList.add('conn-online');
-    else if (status === 'syncing') d.classList.add('conn-syncing');
-    else d.classList.add('conn-offline');
-  });
-  const labels = { online:'Sincronizado', syncing:'Sincronizando…', offline:'Sem conexão', demo:'Modo demo (local)' };
-  if (label) label.textContent = labels[status] || status;
-
-  const facBadge   = document.getElementById('fac-conn-badge');
-  const particBadge = document.getElementById('partic-conn-badge');
-  const badgeCls   = { online:'badge-green', syncing:'badge-orange', offline:'badge-red', demo:'badge-gray' };
-  const badgeTxt   = { online:'⬤ Online', syncing:'⬤ Sync', offline:'⬤ Offline', demo:'⬤ Demo' };
-  if (facBadge) {
-    facBadge.className = 'badge badge-sm ' + (badgeCls[status]||'badge-gray');
-    facBadge.textContent = badgeTxt[status]||status;
-  }
-  if (particBadge) {
-    particBadge.className = 'badge badge-sm ' + (badgeCls[status]||'badge-gray');
-    particBadge.textContent = badgeTxt[status]||status;
-  }
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-// LOADER E TOAST
-// ══════════════════════════════════════════════════════════════════════════
-function setLoader(visible, msg) {
-  document.getElementById('loader').style.display = visible ? 'flex' : 'none';
-  if (msg) document.getElementById('loader-msg').textContent = msg;
-}
-
-let toastTimer = null;
-function toast(msg, tipo) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.background = tipo==='erro' ? '#C0392B' : tipo==='ok' ? '#1E7E34' : '#1A1A1A';
+// ══════════════════════════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════════════════════════
+let toastTimer=null;
+function toast(msg,tipo){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.background=tipo==='erro'?'#C0392B':tipo==='ok'?'#1E7E34':'#1A1A1A';
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+function setLoader(v,msg){
+  document.getElementById('loader').style.display=v?'flex':'none';
+  if(msg)document.getElementById('loader-msg').textContent=msg;
+}
+function esc(s){
+  if(!s)return'';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function v(id){const el=document.getElementById(id);return el?el.value.trim():''}
+
+function setConnStatus(s){
+  connStatus=s;
+  const cls={online:'conn-online',syncing:'conn-syncing',offline:'conn-offline'};
+  const lbl={online:'Sincronizado',syncing:'Sincronizando…',offline:'Sem conexão'};
+  const bCls={online:'badge-green',syncing:'badge-orange',offline:'badge-red'};
+  const bTxt={online:'⬤ Online',syncing:'⬤ Sync',offline:'⬤ Offline'};
+  ['home-conn-dot'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.className='conn-dot';el.classList.add(cls[s]||'conn-offline');}
+  });
+  const lbEl=document.getElementById('home-conn-label');
+  if(lbEl)lbEl.textContent=lbl[s]||s;
+  ['fac-conn-badge','grupo-conn-badge','partic-conn-badge'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.className='badge badge-sm '+(bCls[s]||'badge-gray');el.textContent=bTxt[s]||s;}
+  });
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
+// FASE
+// ══════════════════════════════════════════════════════════════════
+const FASE_INFO = {
+  config:    {label:'⚙️ Configuração',     cls:'fase-config'},
+  cadastro:  {label:'✏️ Cadastro',         cls:'fase-cadastro'},
+  aprovacao: {label:'✅ Aprovação',         cls:'fase-aprovacao'},
+  votacao:   {label:'🗳️ Votação',          cls:'fase-votacao'},
+  resultado: {label:'🏆 Resultado Final',   cls:'fase-resultado'},
+};
+
+function renderFaseBadges(){
+  const f=STATE.fase;
+  const info=FASE_INFO[f]||{label:f,cls:'fase-config'};
+  const html=`<div class="fase-badge ${info.cls}">${info.label}</div>`;
+  ['home-fase-badge','fac-fase-badge'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=html;
+  });
+  // Highlight na tab de fase
+  FASES.forEach(fase=>{
+    const el=document.getElementById('fase-btn-'+fase);
+    if(!el)return;
+    el.style.borderColor   = fase===f?'#F2B400':'#333';
+    el.style.background    = fase===f?'#2A2000':'#1A1A1A';
+  });
+  // Habilitar/desabilitar botões home
+  const btnGrupo   =document.getElementById('btn-home-grupo');
+  const btnVotacao =document.getElementById('btn-home-votacao');
+  if(btnGrupo)  btnGrupo.disabled   = f!=='cadastro';
+  if(btnVotacao)btnVotacao.disabled = f!=='votacao';
+}
+
+function setFase(fase){
+  dbSet('fase',fase).then(()=>toast('Fase: '+FASE_INFO[fase].label,'ok'));
+}
+
+// ══════════════════════════════════════════════════════════════════
 // NAVEGAÇÃO
-// ══════════════════════════════════════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
+// ══════════════════════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+function goHome(){showScreen('home');}
+
+function goFacilitador(){showScreen('facilitador');renderFacilitador();}
+
+function goGrupo(){
+  if(STATE.fase!=='cadastro'){
+    showScreen('grupo');
+    showGrupoSub('fechado');
+    const msg=document.getElementById('grupo-fechado-msg');
+    if(msg)msg.textContent=STATE.fase==='config'?'Aguarde o facilitador abrir a fase de cadastro.':
+      STATE.fase==='aprovacao'?'A fase de cadastro foi encerrada. Aguarde a votação.':
+      'Esta fase não permite cadastro de ações.';
+    return;
+  }
+  // Popular select de grupos
+  preencherSelectGrupos('grupo-select');
+  showScreen('grupo');
+  showGrupoSub('id');
 }
 
-function goHome() {
-  removerPresenca();
-  particNome = '';
-  showScreen('home');
-}
-
-function goFacilitador() {
-  showScreen('facilitador');
-  registrarPresenca('Facilitador');
-  renderFacilitador();
-}
-
-function goParticipante() {
-  particNotas = {}; particSalvo = {};
-  if (!STATE.votacaoAberta) {
+function goParticipante(){
+  if(STATE.fase!=='votacao'){
     showScreen('participante');
-    document.getElementById('partic-id-screen').classList.add('hidden');
-    document.getElementById('partic-vote-screen').classList.add('hidden');
-    document.getElementById('partic-fechado-screen').classList.remove('hidden');
+    showParticSub('fechado');
     return;
   }
-  if (!STATE.acoes.length) {
-    toast('O facilitador ainda não cadastrou ações.', 'info');
-    return;
-  }
+  const acoesAprovadas=Object.values(STATE.acoes||{}).filter(a=>a.status==='aprovada');
+  if(!acoesAprovadas.length){toast('Nenhuma ação aprovada ainda.','info');return;}
+  preencherSelectGrupos('partic-grupo-select');
   showScreen('participante');
-  document.getElementById('partic-fechado-screen').classList.add('hidden');
-  document.getElementById('partic-vote-screen').classList.add('hidden');
-  document.getElementById('partic-id-screen').classList.remove('hidden');
-  document.getElementById('partic-nome-input').value = '';
-  document.getElementById('partic-nome-input').focus();
+  showParticSub('id');
 }
 
-function confirmarNome() {
-  const nome = document.getElementById('partic-nome-input').value.trim();
-  if (!nome) return;
-  particNome = nome;
-  registrarPresenca(nome);
-  document.getElementById('partic-id-screen').classList.add('hidden');
-  document.getElementById('partic-vote-screen').classList.remove('hidden');
-  document.getElementById('partic-nome-header').textContent = '👤 ' + nome;
-  particLinhaAtiva = 'RTK';
-  renderParticLinhaChips();
-  renderParticAcoes();
+function goResultado(){showScreen('resultado');resLinhaAtiva='RTK';resMostrarTodas=false;renderResultado();}
+
+function showGrupoSub(sub){
+  ['grupo-id-screen','grupo-fechado-screen','grupo-cadastro-screen'].forEach(id=>{
+    document.getElementById(id).classList.add('hidden');
+  });
+  document.getElementById('grupo-'+sub+'-screen').classList.remove('hidden');
+}
+function showParticSub(sub){
+  ['partic-id-screen','partic-fechado-screen','partic-vote-screen'].forEach(id=>{
+    document.getElementById(id).classList.add('hidden');
+  });
+  document.getElementById('partic-'+sub+'-screen').classList.remove('hidden');
 }
 
-function goResultado() {
-  showScreen('resultado');
-  resLinhaAtiva = 'RTK';
-  resMostrarTodas = false;
-  renderResultado();
+function preencherSelectGrupos(selectId){
+  const sel=document.getElementById(selectId);
+  if(!sel)return;
+  sel.innerHTML='<option value="">Selecione o grupo...</option>';
+  Object.entries(STATE.grupos||{}).forEach(([id,g])=>{
+    sel.innerHTML+=`<option value="${id}">${esc(g.nome)}</option>`;
+  });
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-// ATUALIZAR UI ATIVA (chamada quando STATE muda via Firebase listener)
-// ══════════════════════════════════════════════════════════════════════════
-function atualizarUIAtiva() {
-  const tela = document.querySelector('.screen.active');
-  if (!tela) return;
-  const id = tela.id.replace('screen-', '');
-  if (id === 'facilitador') {
-    renderFacilitador();
-    // Atualizar aba ativa de controle se visível
-    const tabControlVisible = !document.getElementById('tab-controle').classList.contains('hidden');
-    if (tabControlVisible) renderControle();
-    const tabPresencaVisible = !document.getElementById('tab-presenca').classList.contains('hidden');
-    if (tabPresencaVisible) renderPresenca();
-  } else if (id === 'participante') {
-    // Checar se votação foi fechada enquanto participante estava votando
-    const voteScreen = document.getElementById('partic-vote-screen');
-    if (!voteScreen.classList.contains('hidden') && !STATE.votacaoAberta) {
-      toast('A votação foi encerrada pelo facilitador.', 'info');
-    }
-    if (!STATE.votacaoAberta && !document.getElementById('partic-fechado-screen').classList.contains('hidden') === false) {
-      // já está na tela fechado, ok
-    }
-    if (particNome && STATE.votacaoAberta) {
-      renderParticAcoes();
-    }
-  } else if (id === 'resultado') {
-    renderResultado();
-  }
+// ══════════════════════════════════════════════════════════════════
+// ATUALIZAR UI ATIVA (listener Firebase)
+// ══════════════════════════════════════════════════════════════════
+function atualizarUIAtiva(){
+  renderFaseBadges();
+  const tela=document.querySelector('.screen.active');
+  if(!tela)return;
+  const id=tela.id.replace('screen-','');
+  if(id==='home'){/* badges já atualizados */}
+  else if(id==='facilitador') renderFacilitador();
+  else if(id==='grupo' && meuGrupoId) renderGrupoAcoes();
+  else if(id==='participante' && particNome) renderParticAcoes();
+  else if(id==='resultado') renderResultado();
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 // CÁLCULOS
-// ══════════════════════════════════════════════════════════════════════════
-function calcNota(notas) {
-  if (!notas) return null;
-  let soma = 0;
-  for (const c of CRITERIOS) {
-    if (!notas[c.id] || notas[c.id] <= 0) return null;
-    soma += notas[c.id] * (STATE.pesos[c.id] || 0);
+// ══════════════════════════════════════════════════════════════════
+function calcNota(notas){
+  if(!notas)return null;
+  let soma=0;
+  for(const c of CRITERIOS){
+    if(!notas[c.id]||notas[c.id]<=0)return null;
+    soma+=notas[c.id]*(STATE.pesos[c.id]||0);
   }
   return +soma.toFixed(2);
 }
-
-function tierInfo(nota) {
-  if (nota === null) return null;
-  if (nota >= 4.5) return { label:"🥇 Prioritária",      color:"#F2B400" };
-  if (nota >= 3.5) return { label:"🥈 Alta Prioridade",  color:"#95A5A6" };
-  if (nota >= 2.5) return { label:"🥉 Média Prioridade", color:"#BA6A00" };
-  return               { label:"⚪ Baixa Prioridade",    color:"#BDC3C7" };
+function tierInfo(nota){
+  if(nota===null)return null;
+  if(nota>=4.5)return{label:"🥇 Prioritária",color:"#F2B400"};
+  if(nota>=3.5)return{label:"🥈 Alta Prioridade",color:"#95A5A6"};
+  if(nota>=2.5)return{label:"🥉 Média Prioridade",color:"#BA6A00"};
+  return{label:"⚪ Baixa Prioridade",color:"#BDC3C7"};
 }
 
-function esc(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 // FACILITADOR
-// ══════════════════════════════════════════════════════════════════════════
-function facTab(tab, btn) {
-  ['acoes','pesos','controle','presenca'].forEach(t => {
-    document.getElementById('tab-' + t).classList.toggle('hidden', t !== tab);
+// ══════════════════════════════════════════════════════════════════
+function facTab(tab,btn){
+  ['grupos','aprovacao','fase','pesos','presenca'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('hidden',t!==tab);
   });
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if (tab === 'pesos') renderPesosSliders();
-  if (tab === 'controle') renderControle();
-  if (tab === 'presenca') renderPresenca();
+  if(tab==='pesos')renderPesosSliders();
+  if(tab==='aprovacao')renderAprovacao();
+  if(tab==='presenca')renderPresenca();
 }
 
-function renderFacilitador() {
-  renderFacLinhaChips();
-  renderListaAcoes();
+function renderFacilitador(){
+  renderListaGrupos();
   atualizarStats();
-  atualizarVotacaoBadge();
+  renderFaseBadges();
+  // Atualizar aba visível
+  if(!document.getElementById('tab-aprovacao').classList.contains('hidden'))renderAprovacao();
+  if(!document.getElementById('tab-presenca').classList.contains('hidden'))renderPresenca();
 }
 
-function renderFacLinhaChips() {
-  const el = document.getElementById('linha-chips-fac');
-  if (!el) return;
-  el.innerHTML = LINHAS.map(l => {
-    const n = STATE.acoes.filter(a => a.linha === l.id).length;
-    const ativo = l.id === facLinhaAtiva;
-    return `<button class="linha-chip ${ativo?'active':''}" onclick="setFacLinha('${l.id}')">
-      ${l.emoji} ${l.id} <span class="badge badge-sm" style="background:${ativo?'#D9A200':'#E0E0E0'};color:#1A1A1A;margin-left:4px">${n}</span>
-    </button>`;
-  }).join('');
-  const l = LINHAS.find(x=>x.id===facLinhaAtiva);
-  document.getElementById('fac-linha-titulo').textContent = `+ Nova Ação — ${l.emoji} ${l.nome}`;
-}
-
-function setFacLinha(id) {
-  facLinhaAtiva = id;
-  renderFacLinhaChips();
-  renderListaAcoes();
-}
-
-function addAcao() {
-  const acao = document.getElementById('nova-acao').value.trim();
-  if (!acao) { document.getElementById('nova-acao').focus(); return; }
-  const nLinha = STATE.acoes.filter(a => a.linha === facLinhaAtiva).length;
-  const codigo = `${facLinhaAtiva}-${String(nLinha+1).padStart(2,'0')}`;
-  const nova = {
-    id: 'acao_' + Date.now(),
-    linha: facLinhaAtiva, codigo,
-    acao, grupo: v('nova-grupo'), segmento: v('nova-segmento'),
-    prazo: v('nova-prazo'), custo: v('nova-custo'),
-    lider: v('nova-lider'), resultado: v('nova-resultado'),
-  };
-  STATE.acoes.push(nova);
-  salvarState();
-  ['nova-acao','nova-grupo','nova-segmento','nova-lider','nova-resultado'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
+// ── Grupos ────────────────────────────────────────────────────────
+function addGrupo(){
+  const nome=v('novo-grupo-nome');
+  if(!nome){document.getElementById('novo-grupo-nome').focus();return;}
+  const id='grp_'+Date.now();
+  dbSet('grupos/'+id,{nome,id}).then(()=>{
+    document.getElementById('novo-grupo-nome').value='';
+    toast('Grupo "'+nome+'" criado!','ok');
   });
-  document.getElementById('nova-prazo').value = '';
-  document.getElementById('nova-custo').value = '';
-  if (modoDemo) { renderFacLinhaChips(); renderListaAcoes(); atualizarStats(); }
-  toast('Ação adicionada!', 'ok');
 }
 
-function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
-
-function removeAcao(id) {
-  STATE.acoes = STATE.acoes.filter(a => a.id !== id);
-  if (!modoDemo && dbRef) {
-    db.ref(DB_ROOT + '/acoes/' + id).remove();
-  }
-  salvarState();
-  if (modoDemo) { renderFacLinhaChips(); renderListaAcoes(); atualizarStats(); }
+function removeGrupo(id){
+  if(!confirm('Remover este grupo e todas as suas ações?'))return;
+  dbRemove('grupos/'+id);
+  // Remover ações do grupo
+  Object.entries(STATE.acoes||{}).forEach(([aid,a])=>{
+    if(a.grupoId===id)dbRemove('acoes/'+aid);
+  });
 }
 
-function renderListaAcoes() {
-  const lista = document.getElementById('lista-acoes');
-  if (!lista) return;
-  const acoes = STATE.acoes.filter(a => a.linha === facLinhaAtiva);
-  if (!acoes.length) {
-    lista.innerHTML = `<div style="text-align:center;color:#AAA;padding:40px 0;font-size:15px">
-      Nenhuma ação cadastrada para esta linha
-    </div>`;
+function renderListaGrupos(){
+  const el=document.getElementById('lista-grupos-fac');
+  if(!el)return;
+  const grupos=Object.values(STATE.grupos||{});
+  if(!grupos.length){
+    el.innerHTML=`<div style="text-align:center;color:#AAA;padding:40px 0;font-size:15px">Nenhum grupo criado ainda</div>`;
     return;
   }
-  lista.innerHTML = acoes.map(a => `
-    <div class="card" style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px">
-      <div style="min-width:58px;text-align:center"><span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${a.codigo}</span></div>
+  el.innerHTML=grupos.map(g=>{
+    const nAcoes=Object.values(STATE.acoes||{}).filter(a=>a.grupoId===g.id).length;
+    const nAprov=Object.values(STATE.acoes||{}).filter(a=>a.grupoId===g.id&&a.status==='aprovada').length;
+    const nPend =Object.values(STATE.acoes||{}).filter(a=>a.grupoId===g.id&&a.status==='pendente').length;
+    return`<div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 18px">
+      <div style="font-size:24px">👥</div>
       <div style="flex:1">
-        <div style="font-weight:700;font-size:14px">${esc(a.acao)}</div>
-        <div style="font-size:12px;color:#888;margin-top:4px;display:flex;gap:12px;flex-wrap:wrap">
-          ${a.grupo?`<span>👥 ${esc(a.grupo)}</span>`:''}
-          ${a.segmento?`<span>🎯 ${esc(a.segmento)}</span>`:''}
-          ${a.prazo?`<span>⏱ ${esc(a.prazo)}</span>`:''}
-          ${a.custo?`<span>💰 ${esc(a.custo)}</span>`:''}
-          ${a.lider?`<span>👤 ${esc(a.lider)}</span>`:''}
+        <div style="font-weight:700;font-size:15px">${esc(g.nome)}</div>
+        <div style="font-size:12px;color:#888;margin-top:4px;display:flex;gap:10px;flex-wrap:wrap">
+          <span>${nAcoes} ações</span>
+          ${nAprov?`<span style="color:var(--green)">✓ ${nAprov} aprovadas</span>`:''}
+          ${nPend?`<span style="color:var(--orange)">⏳ ${nPend} pendentes</span>`:''}
         </div>
-        ${a.resultado?`<div style="font-size:12px;color:#1A5276;margin-top:4px">📈 ${esc(a.resultado)}</div>`:''}
       </div>
-      <button onclick="removeAcao('${a.id}')" style="background:none;border:none;color:#CCC;cursor:pointer;font-size:18px;padding:4px;line-height:1"
+      <button onclick="removeGrupo('${g.id}')" style="background:none;border:none;color:#CCC;cursor:pointer;font-size:18px"
         onmouseover="this.style.color='#C0392B'" onmouseout="this.style.color='#CCC'">✕</button>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-function atualizarStats() {
-  const statAcoes  = document.getElementById('stat-acoes');
-  const statPartic = document.getElementById('stat-partic');
-  const statVotos  = document.getElementById('stat-votos');
-  const statOnline = document.getElementById('stat-online');
-  if (statAcoes)  statAcoes.textContent  = STATE.acoes.length;
-  const partics = new Set(Object.keys(STATE.votos || {}));
-  if (statPartic) statPartic.textContent = partics.size;
-  const totalVotos = Object.values(STATE.votos || {}).reduce((s,v) => s + Object.keys(v).length, 0);
-  if (statVotos)  statVotos.textContent  = totalVotos;
-  const nOnline = Object.keys(STATE.presenca || {}).length;
-  if (statOnline) statOnline.textContent = nOnline || '–';
+function atualizarStats(){
+  const acoes=Object.values(STATE.acoes||{});
+  const s={
+    grupos: Object.keys(STATE.grupos||{}).length,
+    pendentes: acoes.filter(a=>a.status==='pendente').length,
+    aprovadas: acoes.filter(a=>a.status==='aprovada').length,
+    votos: new Set(Object.keys(STATE.votos||{})).size,
+  };
+  ['grupos','pendentes','aprovadas','votos'].forEach(k=>{
+    const el=document.getElementById('stat-'+k);
+    if(el)el.textContent=s[k];
+  });
 }
 
-function atualizarVotacaoBadge() {
-  const badge = document.getElementById('fac-votacao-badge');
-  if (!badge) return;
-  badge.textContent = STATE.votacaoAberta ? '🔓 Aberta' : '🔒 Fechada';
-  badge.className = 'badge ' + (STATE.votacaoAberta ? 'badge-green' : 'badge-gray');
+// ── Aprovação ─────────────────────────────────────────────────────
+function renderAprovacaoChips(){
+  const el=document.getElementById('aprovacao-linha-chips');
+  if(!el)return;
+  el.innerHTML=LINHAS.map(l=>{
+    const nPend=Object.values(STATE.acoes||{}).filter(a=>a.linha===l.id&&a.status==='pendente').length;
+    const ativo=l.id===facAprovacaoLinhaAtiva;
+    return`<button class="linha-chip ${ativo?'active':''}" onclick="setFacAprovacaoLinha('${l.id}')">
+      ${l.emoji} ${l.id}
+      ${nPend?`<span class="badge badge-sm badge-orange" style="margin-left:4px">${nPend}</span>`:''}
+    </button>`;
+  }).join('');
 }
 
-// ── Pesos ─────────────────────────────────────────────────────────────────
-function renderPesosSliders() {
-  pesosTemp = {...STATE.pesos};
-  const el = document.getElementById('pesos-sliders');
-  if (!el) return;
-  el.innerHTML = CRITERIOS.map(c => `
+function setFacAprovacaoLinha(id){facAprovacaoLinhaAtiva=id;renderAprovacao();}
+
+function renderAprovacao(){
+  renderAprovacaoChips();
+  const lista=document.getElementById('lista-aprovacao');
+  if(!lista)return;
+  const acoes=Object.values(STATE.acoes||{}).filter(a=>a.linha===facAprovacaoLinhaAtiva);
+  if(!acoes.length){
+    lista.innerHTML=`<div style="text-align:center;color:#AAA;padding:40px 0">Nenhuma ação nesta linha</div>`;
+    return;
+  }
+  // Ordenar: pendentes primeiro
+  acoes.sort((a,b)=>{
+    const ord={pendente:0,aprovada:1,rejeitada:2};
+    return(ord[a.status]||0)-(ord[b.status]||0);
+  });
+  lista.innerHTML=acoes.map(a=>{
+    const statusCls=a.status==='aprovada'?'acao-aprovada':a.status==='rejeitada'?'acao-rejeitada':'acao-pendente';
+    const statusBadge=a.status==='aprovada'?'<span class="badge badge-sm badge-green">✓ Aprovada</span>':
+      a.status==='rejeitada'?'<span class="badge badge-sm badge-red">✕ Rejeitada</span>':
+      '<span class="badge badge-sm badge-orange">⏳ Pendente</span>';
+    return`<div class="card ${statusCls}" style="padding:14px 18px;margin-bottom:10px">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="flex:1">
+          <div class="flex gap-8 items-center" style="margin-bottom:6px;flex-wrap:wrap">
+            ${statusBadge}
+            <span class="badge badge-sm badge-gray">👥 ${esc(a.grupoNome||'')}</span>
+            <span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${esc(a.codigo||'')}</span>
+          </div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px">${esc(a.acao)}</div>
+          <div style="font-size:12px;color:#888;display:flex;gap:10px;flex-wrap:wrap">
+            ${a.segmento?`<span>🎯 ${esc(a.segmento)}</span>`:''}
+            ${a.lider?`<span>👤 ${esc(a.lider)}</span>`:''}
+            ${a.prazo?`<span>⏱ ${esc(a.prazo)}</span>`:''}
+          </div>
+          ${a.resultado?`<div style="font-size:12px;color:var(--blue);margin-top:4px">📈 ${esc(a.resultado)}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          ${a.status!=='aprovada'?`<button class="btn btn-green btn-sm" onclick="aprovarAcao('${a.id}')">✓ Aprovar</button>`:''}
+          ${a.status!=='rejeitada'?`<button class="btn btn-danger btn-sm" onclick="rejeitarAcao('${a.id}')">✕ Rejeitar</button>`:''}
+          <button class="btn btn-ghost btn-sm" onclick="excluirAcao('${a.id}')">🗑 Excluir</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function aprovarAcao(id){
+  // Gerar código sequencial por linha
+  const acao=STATE.acoes[id];
+  if(!acao)return;
+  const nAprovadas=Object.values(STATE.acoes).filter(a=>a.linha===acao.linha&&a.status==='aprovada').length;
+  const codigo=`${acao.linha}-${String(nAprovadas+1).padStart(2,'0')}`;
+  dbUpdate('acoes/'+id,{status:'aprovada',codigo}).then(()=>toast('Ação aprovada!','ok'));
+}
+function rejeitarAcao(id){
+  dbUpdate('acoes/'+id,{status:'rejeitada'}).then(()=>toast('Ação rejeitada.','info'));
+}
+function excluirAcao(id){
+  if(!confirm('Excluir esta ação permanentemente?'))return;
+  dbRemove('acoes/'+id);
+}
+
+// ── Pesos ─────────────────────────────────────────────────────────
+function renderPesosSliders(){
+  pesosTemp={...STATE.pesos};
+  const el=document.getElementById('pesos-sliders');
+  if(!el)return;
+  el.innerHTML=CRITERIOS.map(c=>`
     <div style="margin-bottom:18px">
       <div class="flex justify-between" style="margin-bottom:6px">
         <div>
           <span style="font-weight:700;font-size:14px">${c.desc}</span>
           <span style="font-size:11px;color:#888;margin-left:8px">${c.dica}</span>
         </div>
-        <span id="peso-val-${c.id}" style="font-weight:900;font-size:18px;color:#F2B400;min-width:44px;text-align:right">
+        <span id="peso-val-${c.id}" style="font-weight:900;font-size:18px;color:var(--gold);min-width:44px;text-align:right">
           ${Math.round((STATE.pesos[c.id]||0)*100)}%
         </span>
       </div>
       <input type="range" min="0" max="100" step="5" value="${Math.round((STATE.pesos[c.id]||0)*100)}"
-        style="width:100%;accent-color:#F2B400"
-        oninput="updatePesoTemp('${c.id}', this.value)">
-    </div>
-  `).join('');
+        style="width:100%;accent-color:var(--gold)"
+        oninput="updatePesoTemp('${c.id}',this.value)">
+    </div>`).join('');
   atualizarTotalPesos();
 }
-
-function updatePesoTemp(id, val) {
-  pesosTemp[id] = parseInt(val) / 100;
-  document.getElementById('peso-val-' + id).textContent = val + '%';
+function updatePesoTemp(id,val){
+  pesosTemp[id]=parseInt(val)/100;
+  document.getElementById('peso-val-'+id).textContent=val+'%';
   atualizarTotalPesos();
 }
-
-function atualizarTotalPesos() {
-  const total = Object.values(pesosTemp).reduce((s,v)=>s+v,0);
-  const el = document.getElementById('pesos-total');
-  const pct = Math.round(total * 100);
-  if (el) el.textContent = pct + '%';
-  if (el) el.style.color = Math.abs(total - 1) < 0.001 ? '#1E7E34' : '#C0392B';
-  const aviso = document.getElementById('pesos-aviso');
-  if (aviso) aviso.classList.toggle('hidden', Math.abs(total-1) < 0.001);
+function atualizarTotalPesos(){
+  const total=Object.values(pesosTemp).reduce((s,v)=>s+v,0);
+  const el=document.getElementById('pesos-total');
+  const pct=Math.round(total*100);
+  if(el){el.textContent=pct+'%';el.style.color=Math.abs(total-1)<0.001?'var(--green)':'var(--red)';}
+  const av=document.getElementById('pesos-aviso');
+  if(av)av.classList.toggle('hidden',Math.abs(total-1)<0.001);
+}
+function salvarPesos(){
+  const total=Object.values(pesosTemp).reduce((s,v)=>s+v,0);
+  if(Math.abs(total-1)>0.001)return;
+  dbSet('pesos',pesosTemp).then(()=>toast('Pesos salvos!','ok'));
 }
 
-function salvarPesos() {
-  const total = Object.values(pesosTemp).reduce((s,v)=>s+v,0);
-  if (Math.abs(total - 1) > 0.001) return;
-  STATE.pesos = {...pesosTemp};
-  salvarState();
-  toast('Pesos salvos!', 'ok');
-}
-
-// ── Controle ──────────────────────────────────────────────────────────────
-function toggleVotacao() {
-  STATE.votacaoAberta = !STATE.votacaoAberta;
-  if (!modoDemo && dbRef) {
-    dbRef.update({ votacaoAberta: STATE.votacaoAberta });
-  } else {
-    salvarState();
-  }
-  atualizarVotacaoBadge();
-  renderControle();
-  toast(STATE.votacaoAberta ? 'Votação aberta para todos!' : 'Votação encerrada.', STATE.votacaoAberta ? 'ok' : 'info');
-}
-
-function renderControle() {
-  const btn = document.getElementById('btn-toggle-votacao');
-  if (!btn) return;
-  btn.textContent = STATE.votacaoAberta ? '🔒 Fechar Votação' : '🔓 Abrir Votação';
-  btn.className = 'btn btn-sm ' + (STATE.votacaoAberta ? 'btn-danger' : 'btn-primary');
-
-  const statusEl = document.getElementById('status-linhas');
-  if (!statusEl) return;
-  statusEl.innerHTML = LINHAS.map(l => {
-    const nAcoes = STATE.acoes.filter(a=>a.linha===l.id).length;
-    const nVotos = Object.values(STATE.votos||{}).filter(v=>Object.keys(v).some(k=>k.startsWith(l.id))).length;
-    return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:10px 0;border-bottom:1px solid #E0E0E0">
-      <span style="font-size:20px">${l.emoji}</span>
-      <span style="font-weight:700;flex:1">${l.nome}</span>
-      <span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${nAcoes} ações</span>
-      <span class="badge badge-sm ${nVotos>0?'badge-green':'badge-gray'}">${nVotos} votos</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Presença ──────────────────────────────────────────────────────────────
-function renderPresenca() {
-  const lista = document.getElementById('presenca-lista');
-  const votosEl = document.getElementById('presenca-votos');
-  if (!lista) return;
-
-  const presentes = Object.values(STATE.presenca || {});
-  if (!presentes.length) {
-    lista.innerHTML = '<p style="color:#AAA;font-size:14px">Nenhum participante online.</p>';
-  } else {
-    lista.innerHTML = presentes.map(p => `
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #F0F0F0">
-        <span style="color:#2ECC71;font-size:10px">⬤</span>
-        <span style="font-weight:600">${esc(p.nome||'Anônimo')}</span>
-        <span style="font-size:11px;color:#AAA;margin-left:auto">${tempoAtras(p.ts)}</span>
-      </div>
-    `).join('');
-  }
-
+// ── Presença/Progresso ────────────────────────────────────────────
+function renderPresenca(){
   // Progresso de votos
-  if (!votosEl) return;
-  const participantes = Object.keys(STATE.votos || {});
-  if (!participantes.length) {
-    votosEl.innerHTML = '<p style="color:#AAA;font-size:14px">Nenhum voto registrado ainda.</p>';
-    return;
+  const votosEl=document.getElementById('presenca-votos');
+  const acoesFiltradas=Object.values(STATE.acoes||{}).filter(a=>a.status==='aprovada');
+  if(votosEl){
+    const partics=Object.keys(STATE.votos||{});
+    if(!partics.length){
+      votosEl.innerHTML='<p style="color:#AAA;font-size:14px">Nenhum voto registrado ainda.</p>';
+    } else {
+      votosEl.innerHTML=partics.map(nome=>{
+        const votosP=STATE.votos[nome];
+        const nVotados=Object.keys(votosP||{}).length;
+        const total=acoesFiltradas.filter(a=>a.grupoId!==particGrupoId).length||acoesFiltradas.length;
+        const pct=total?Math.round((nVotados/total)*100):0;
+        return`<div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="font-weight:600;font-size:14px">${esc(nome)}</span>
+            <span style="font-size:12px;color:#888">${nVotados} ações avaliadas</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join('');
+    }
   }
-  votosEl.innerHTML = participantes.map(nome => {
-    const votosPartic = STATE.votos[nome];
-    const acoesVotadas = Object.keys(votosPartic||{}).length;
-    const totalAcoes   = STATE.acoes.length;
-    const pct = totalAcoes ? Math.round((acoesVotadas/totalAcoes)*100) : 0;
-    return `<div style="margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-        <span style="font-weight:600;font-size:14px">${esc(nome)}</span>
-        <span style="font-size:12px;color:#888">${acoesVotadas}/${totalAcoes} ações</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-    </div>`;
-  }).join('');
+  // Ações por grupo
+  const grpEl=document.getElementById('presenca-grupos');
+  if(grpEl){
+    const grupos=Object.values(STATE.grupos||{});
+    if(!grupos.length){
+      grpEl.innerHTML='<p style="color:#AAA;font-size:14px">Nenhum grupo criado.</p>';
+    } else {
+      grpEl.innerHTML=grupos.map(g=>{
+        const acs=Object.values(STATE.acoes||{}).filter(a=>a.grupoId===g.id);
+        const porStatus={pendente:0,aprovada:0,rejeitada:0};
+        acs.forEach(a=>porStatus[a.status]=(porStatus[a.status]||0)+1);
+        return`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F0F0F0">
+          <span style="font-weight:700;flex:1">${esc(g.nome)}</span>
+          ${porStatus.aprovada?`<span class="badge badge-sm badge-green">${porStatus.aprovada} ✓</span>`:''}
+          ${porStatus.pendente?`<span class="badge badge-sm badge-orange">${porStatus.pendente} ⏳</span>`:''}
+          ${porStatus.rejeitada?`<span class="badge badge-sm badge-red">${porStatus.rejeitada} ✕</span>`:''}
+          ${!acs.length?`<span style="font-size:12px;color:#AAA">sem ações</span>`:''}
+        </div>`;
+      }).join('');
+    }
+  }
 }
 
-function tempoAtras(ts) {
-  if (!ts) return '';
-  const diff = Math.round((Date.now() - ts) / 1000);
-  if (diff < 60)  return 'agora';
-  if (diff < 3600) return Math.floor(diff/60) + 'min atrás';
-  return Math.floor(diff/3600) + 'h atrás';
-}
-
-function showConfirmReset() {
+// Reset
+function showConfirmReset(){
   document.getElementById('confirm-reset-area').classList.add('hidden');
   document.getElementById('confirm-reset-btns').classList.remove('hidden');
 }
-function hideConfirmReset() {
+function hideConfirmReset(){
   document.getElementById('confirm-reset-area').classList.remove('hidden');
   document.getElementById('confirm-reset-btns').classList.add('hidden');
 }
-function resetTudo() {
-  STATE = { acoes:[], votos:{}, pesos:{...PESOS_DEFAULT}, votacaoAberta:false, presenca:{} };
-  if (!modoDemo && dbRef) {
-    dbRef.set({ pesos: STATE.pesos, votacaoAberta: false });
-  } else {
-    salvarState();
-  }
-  hideConfirmReset();
-  renderFacilitador();
-  facTab('acoes', document.querySelector('.tab-btn'));
-  toast('Dados reiniciados.', 'info');
+function resetTudo(){
+  dbRef.set({fase:'config',pesos:PESOS_DEFAULT}).then(()=>{
+    hideConfirmReset();
+    toast('Dados reiniciados.','info');
+  });
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-// PARTICIPANTE
-// ══════════════════════════════════════════════════════════════════════════
-function renderParticLinhaChips() {
-  const el = document.getElementById('partic-linha-chips');
-  if (!el) return;
-  const linhasCompletas = LINHAS.filter(l=>particSalvo[l.id]).length;
-  document.getElementById('partic-progresso-badge').textContent = `${linhasCompletas}/5 linhas`;
-  el.innerHTML = LINHAS.map(l => {
-    let cls = particSalvo[l.id] ? 'done' : (l.id===particLinhaAtiva?'active':'');
-    return `<button class="linha-chip ${cls}" style="flex:1;text-align:center;padding:6px 4px;font-size:11px"
+// ══════════════════════════════════════════════════════════════════
+// GRUPO — CADASTRO DE AÇÕES
+// ══════════════════════════════════════════════════════════════════
+function confirmarGrupo(){
+  const grupoId=v('grupo-select');
+  const nome=v('grupo-nome-input');
+  if(!grupoId){toast('Selecione o grupo.','erro');return;}
+  if(!nome){document.getElementById('grupo-nome-input').focus();return;}
+  meuGrupoId=grupoId;
+  meuGrupoNome=STATE.grupos[grupoId]?.nome||grupoId;
+  meuNome=nome;
+  document.getElementById('grupo-header-nome').textContent=`✏️ ${meuGrupoNome} · ${nome}`;
+  grupoLinhaAtiva='RTK';
+  showGrupoSub('cadastro');
+  renderGrupoLinhaChips();
+  renderGrupoAcoes();
+}
+
+function renderGrupoLinhaChips(){
+  const el=document.getElementById('grupo-linha-chips');
+  if(!el)return;
+  el.innerHTML=LINHAS.map(l=>{
+    const n=Object.values(STATE.acoes||{}).filter(a=>a.grupoId===meuGrupoId&&a.linha===l.id).length;
+    const ativo=l.id===grupoLinhaAtiva;
+    return`<button class="linha-chip ${ativo?'active':''}" style="flex-shrink:0"
+      onclick="setGrupoLinha('${l.id}')">
+      ${l.emoji} ${l.id} ${n?`<span class="badge badge-sm" style="background:${ativo?'#D9A200':'#E0E0E0'};color:#1A1A1A;margin-left:4px">${n}</span>`:''}
+    </button>`;
+  }).join('');
+  const l=LINHAS.find(x=>x.id===grupoLinhaAtiva);
+  const el2=document.getElementById('grupo-linha-titulo');
+  if(el2)el2.textContent=`${l.emoji} ${l.nome}`;
+}
+
+function setGrupoLinha(id){grupoLinhaAtiva=id;renderGrupoLinhaChips();renderGrupoAcoes();}
+
+function addAcaoGrupo(){
+  const acao=v('g-nova-acao');
+  if(!acao){document.getElementById('g-nova-acao').focus();return;}
+  const id='ac_'+Date.now()+'_'+Math.random().toString(36).slice(2,5);
+  const novaAcao={
+    id, linha:grupoLinhaAtiva,
+    grupoId:meuGrupoId, grupoNome:meuGrupoNome,
+    autor:meuNome,
+    acao,
+    segmento:v('g-nova-segmento'),
+    lider:v('g-nova-lider'),
+    resultado:v('g-nova-resultado'),
+    prazo:v('g-nova-prazo'),
+    status:'pendente',
+    codigo:'',
+    ts:Date.now(),
+  };
+  dbSet('acoes/'+id, novaAcao).then(()=>{
+    ['g-nova-acao','g-nova-segmento','g-nova-lider','g-nova-resultado'].forEach(i=>{
+      const el=document.getElementById(i);if(el)el.value='';
+    });
+    document.getElementById('g-nova-prazo').value='';
+    toast('Ação enviada para aprovação!','ok');
+  });
+}
+
+function renderGrupoAcoes(){
+  renderGrupoLinhaChips();
+  const lista=document.getElementById('grupo-acoes-lista');
+  if(!lista)return;
+  const acoes=Object.values(STATE.acoes||{}).filter(a=>a.grupoId===meuGrupoId&&a.linha===grupoLinhaAtiva);
+  const countEl=document.getElementById('grupo-acoes-count');
+  if(countEl)countEl.textContent=acoes.length+' ação'+(acoes.length!==1?'s':'');
+  if(!acoes.length){
+    lista.innerHTML=`<div class="card" style="text-align:center;color:#AAA;padding:32px">Nenhuma ação cadastrada para esta linha ainda.</div>`;
+    return;
+  }
+  lista.innerHTML=acoes.map(a=>{
+    const statusBadge=a.status==='aprovada'?'<span class="badge badge-sm badge-green">✓ Aprovada</span>':
+      a.status==='rejeitada'?'<span class="badge badge-sm badge-red">✕ Rejeitada pelo facilitador</span>':
+      '<span class="badge badge-sm badge-orange">⏳ Aguardando aprovação</span>';
+    const statusCls=a.status==='aprovada'?'acao-aprovada':a.status==='rejeitada'?'acao-rejeitada':'acao-pendente';
+    return`<div class="card ${statusCls}" style="padding:12px 16px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="margin-bottom:6px">${statusBadge}</div>
+          <div style="font-weight:700;font-size:14px">${esc(a.acao)}</div>
+          <div style="font-size:12px;color:#888;margin-top:4px;display:flex;gap:8px;flex-wrap:wrap">
+            ${a.segmento?`<span>🎯 ${esc(a.segmento)}</span>`:''}
+            ${a.lider?`<span>👤 ${esc(a.lider)}</span>`:''}
+            ${a.prazo?`<span>⏱ ${esc(a.prazo)}</span>`:''}
+          </div>
+        </div>
+        ${a.status==='pendente'?`<button onclick="excluirAcaoGrupo('${a.id}')"
+          style="background:none;border:none;color:#CCC;cursor:pointer;font-size:16px"
+          onmouseover="this.style.color='#C0392B'" onmouseout="this.style.color='#CCC'">✕</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function excluirAcaoGrupo(id){
+  if(!confirm('Excluir esta ação?'))return;
+  dbRemove('acoes/'+id);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PARTICIPANTE — VOTAÇÃO
+// ══════════════════════════════════════════════════════════════════
+function confirmarNome(){
+  const grupoId=v('partic-grupo-select');
+  const nome=v('partic-nome-input');
+  if(!grupoId){toast('Selecione seu grupo.','erro');return;}
+  if(!nome){document.getElementById('partic-nome-input').focus();return;}
+  particGrupoId=grupoId;
+  particNome=nome;
+  document.getElementById('partic-nome-header').textContent='👤 '+nome+' · '+(STATE.grupos[grupoId]?.nome||'');
+  particLinhaAtiva='RTK';
+  particNotas={}; particSalvo={};
+  showParticSub('vote');
+  renderParticLinhaChips();
+  renderParticAcoes();
+}
+
+// Ações visíveis para este participante = aprovadas de OUTROS grupos
+function acoesParaVotar(linhaId){
+  return Object.values(STATE.acoes||{}).filter(a=>
+    a.status==='aprovada' && a.linha===linhaId && a.grupoId!==particGrupoId
+  );
+}
+
+function renderParticLinhaChips(){
+  const el=document.getElementById('partic-linha-chips');
+  if(!el)return;
+  const linhasCompletas=LINHAS.filter(l=>particSalvo[l.id]).length;
+  const progEl=document.getElementById('partic-progresso-badge');
+  if(progEl)progEl.textContent=`${linhasCompletas}/5 linhas`;
+  el.innerHTML=LINHAS.map(l=>{
+    const nAcoes=acoesParaVotar(l.id).length;
+    let cls=particSalvo[l.id]?'done':(l.id===particLinhaAtiva?'active':'');
+    return`<button class="linha-chip ${cls}" style="flex-shrink:0;padding:6px 10px;font-size:12px"
       onclick="setParticLinha('${l.id}')">
-      ${l.emoji}<br>${l.id}${particSalvo[l.id]?' ✓':''}
+      ${l.emoji} ${l.id}${nAcoes?` (${nAcoes})`:''} ${particSalvo[l.id]?' ✓':''}
     </button>`;
   }).join('');
 }
 
-function setParticLinha(id) {
-  particLinhaAtiva = id;
-  renderParticLinhaChips();
-  renderParticAcoes();
-}
+function setParticLinha(id){particLinhaAtiva=id;renderParticLinhaChips();renderParticAcoes();}
 
-function renderParticAcoes() {
-  const l = LINHAS.find(x=>x.id===particLinhaAtiva);
-  const tituloEl = document.getElementById('partic-linha-titulo');
-  if (tituloEl) tituloEl.textContent = `${l.emoji} ${l.nome}`;
-  const acoes = STATE.acoes.filter(a=>a.linha===particLinhaAtiva);
-  const avaliadas = acoes.filter(a => {
-    const n = particNotas[a.codigo];
-    return n && CRITERIOS.every(c=>n[c.id]>0);
+function renderParticAcoes(){
+  const l=LINHAS.find(x=>x.id===particLinhaAtiva);
+  const titEl=document.getElementById('partic-linha-titulo');
+  if(titEl)titEl.textContent=`${l.emoji} ${l.nome}`;
+  const acoes=acoesParaVotar(particLinhaAtiva);
+  const avaliadas=acoes.filter(a=>{
+    const n=particNotas[a.id];
+    return n&&CRITERIOS.every(c=>n[c.id]>0);
   }).length;
-  const avaliadasEl = document.getElementById('partic-avaliadas');
-  if (avaliadasEl) avaliadasEl.textContent = `${avaliadas}/${acoes.length} avaliadas`;
-
-  const lista = document.getElementById('partic-acoes-lista');
-  if (!lista) return;
-  if (!acoes.length) {
-    lista.innerHTML = `<div class="card" style="text-align:center;color:#AAA;padding:40px">Nenhuma ação para esta linha</div>`;
+  const avEl=document.getElementById('partic-avaliadas');
+  if(avEl)avEl.textContent=`${avaliadas}/${acoes.length} avaliadas`;
+  const lista=document.getElementById('partic-acoes-lista');
+  if(!lista)return;
+  if(!acoes.length){
+    lista.innerHTML=`<div class="card" style="text-align:center;color:#AAA;padding:40px">
+      <div style="font-size:32px;margin-bottom:8px">📭</div>
+      Nenhuma ação aprovada de outros grupos nesta linha.
+    </div>`;
     atualizarBtnSalvar();
     return;
   }
-
-  lista.innerHTML = acoes.map(a => {
-    const notasAcao = particNotas[a.codigo] || {};
-    const completa = CRITERIOS.every(c => notasAcao[c.id] > 0);
-    const nota = completa ? calcNota(notasAcao) : null;
-    return `<div class="card" id="card-acao-${a.codigo}" style="margin-bottom:16px;border:2px solid ${completa?'#1E7E34':'transparent'}">
-      <div class="flex justify-between items-flex-start" style="margin-bottom:12px">
+  lista.innerHTML=acoes.map(a=>{
+    const notasAcao=particNotas[a.id]||{};
+    const completa=CRITERIOS.every(c=>notasAcao[c.id]>0);
+    const nota=completa?calcNota(notasAcao):null;
+    return`<div class="card" style="margin-bottom:16px;border:2px solid ${completa?'var(--green)':'transparent'}">
+      <div class="flex justify-between" style="margin-bottom:12px">
         <div style="flex:1">
           <div class="flex gap-8 items-center" style="margin-bottom:4px;flex-wrap:wrap">
-            <span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${a.codigo}</span>
-            ${a.grupo?`<span class="badge badge-sm badge-gray">👥 ${esc(a.grupo)}</span>`:''}
+            ${a.codigo?`<span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${esc(a.codigo)}</span>`:''}
+            <span class="badge badge-sm badge-gray">👥 ${esc(a.grupoNome||'')}</span>
             ${completa?`<span class="badge badge-sm badge-green">✓ Avaliada</span>`:''}
           </div>
           <div style="font-weight:700;font-size:15px">${esc(a.acao)}</div>
-          ${a.resultado?`<div style="font-size:12px;color:#1A5276;margin-top:4px">📈 ${esc(a.resultado)}</div>`:''}
+          ${a.resultado?`<div style="font-size:12px;color:var(--blue);margin-top:4px">📈 ${esc(a.resultado)}</div>`:''}
         </div>
-        ${nota!==null?`<div style="text-align:center;min-width:52px"><div style="font-size:22px;font-weight:900;color:#F2B400">${nota}</div><div style="font-size:9px;color:#888">nota</div></div>`:''}
+        ${nota!==null?`<div style="text-align:center;min-width:52px">
+          <div style="font-size:22px;font-weight:900;color:var(--gold)">${nota}</div>
+          <div style="font-size:9px;color:#888">nota</div>
+        </div>`:''}
       </div>
       <div style="border-top:1px solid #E0E0E0;padding-top:12px">
-        ${CRITERIOS.map(c => `
-          <div style="margin-bottom:14px">
+        ${CRITERIOS.map(c=>`
+          <div style="margin-bottom:12px">
             <div class="flex justify-between items-center" style="margin-bottom:6px">
-              <span style="font-weight:700;font-size:14px">${c.label} <span style="font-weight:400;font-size:12px;color:#888">(${Math.round((STATE.pesos[c.id]||0)*100)}%)</span></span>
-              <span style="font-size:11px;color:#888;max-width:180px;text-align:right">${c.dica}</span>
+              <span style="font-weight:700;font-size:13px">${c.label}
+                <span style="font-weight:400;font-size:11px;color:#888">(${Math.round((STATE.pesos[c.id]||0)*100)}%)</span>
+              </span>
+              <span style="font-size:11px;color:#888">${c.dica}</span>
             </div>
             <div class="flex gap-8">
               ${[1,2,3,4,5].map(n=>`
                 <button class="nota-btn ${(notasAcao[c.id]||0)>=n?'selected':''}"
-                  onclick="setParticNota('${a.codigo}','${c.id}',${n})">${n}</button>
+                  onclick="setParticNota('${a.id}','${c.id}',${n})">${n}</button>
               `).join('')}
             </div>
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
     </div>`;
   }).join('');
   atualizarBtnSalvar();
 }
 
-function setParticNota(codigo, crit, val) {
-  if (!particNotas[codigo]) particNotas[codigo] = {};
-  particNotas[codigo][crit] = val;
+function setParticNota(acaoId,crit,val){
+  if(!particNotas[acaoId])particNotas[acaoId]={};
+  particNotas[acaoId][crit]=val;
   renderParticAcoes();
 }
 
-function atualizarBtnSalvar() {
-  const acoes = STATE.acoes.filter(a=>a.linha===particLinhaAtiva);
-  const completas = acoes.filter(a=>{
-    const n=particNotas[a.codigo];
-    return n && CRITERIOS.every(c=>n[c.id]>0);
+function atualizarBtnSalvar(){
+  const acoes=acoesParaVotar(particLinhaAtiva);
+  const completas=acoes.filter(a=>{
+    const n=particNotas[a.id];
+    return n&&CRITERIOS.every(c=>n[c.id]>0);
   }).length;
-  const btn = document.getElementById('btn-salvar-linha');
-  const aviso = document.getElementById('partic-aviso-salvar');
-  const lNome = LINHAS.find(l=>l.id===particLinhaAtiva)?.nome;
-  const jasSalvo = particSalvo[particLinhaAtiva];
-  if (btn) {
-    btn.disabled = completas < acoes.length;
-    btn.textContent = jasSalvo ? `✓ Salvo — atualizar (${lNome})` : `Salvar votos de ${lNome}`;
+  const btn=document.getElementById('btn-salvar-linha');
+  const aviso=document.getElementById('partic-aviso-salvar');
+  const lNome=LINHAS.find(l=>l.id===particLinhaAtiva)?.nome;
+  const jaSalvo=particSalvo[particLinhaAtiva];
+  if(btn){
+    btn.disabled=completas<acoes.length;
+    btn.textContent=jaSalvo?`✓ Atualizar votos (${lNome})`:`Salvar votos — ${lNome}`;
   }
-  if (aviso) aviso.textContent = completas < acoes.length ? `Avalie todas as ${acoes.length} ações antes de salvar` : '';
+  if(aviso)aviso.textContent=completas<acoes.length?`Avalie todas as ${acoes.length} ações antes de salvar`:'';
 }
 
-function salvarLinhaPartic() {
-  const acoes = STATE.acoes.filter(a=>a.linha===particLinhaAtiva);
-  if (!STATE.votos[particNome]) STATE.votos[particNome] = {};
-  acoes.forEach(a => {
-    if (particNotas[a.codigo] && CRITERIOS.every(c=>particNotas[a.codigo][c.id]>0)) {
-      STATE.votos[particNome][a.codigo] = {...particNotas[a.codigo]};
+function salvarLinhaPartic(){
+  const acoes=acoesParaVotar(particLinhaAtiva);
+  if(!STATE.votos[particNome])STATE.votos[particNome]={};
+  const votosLinha={};
+  acoes.forEach(a=>{
+    if(particNotas[a.id]&&CRITERIOS.every(c=>particNotas[a.id][c.id]>0)){
+      votosLinha[a.id]={...particNotas[a.id]};
     }
   });
-
-  // Salvar apenas os votos deste participante no Firebase (não sobrescreve tudo)
-  if (!modoDemo && db) {
-    setConnStatus('syncing');
-    const votosRef = db.ref(DB_ROOT + '/votos/' + particNome);
-    votosRef.set(STATE.votos[particNome])
-      .then(() => { setConnStatus('online'); toast('Votos salvos!', 'ok'); })
-      .catch(e => { setConnStatus('offline'); toast('Erro ao salvar votos: ' + e.message, 'erro'); });
-  } else {
-    salvarState();
-    toast('Votos salvos!', 'ok');
-  }
-
-  particSalvo[particLinhaAtiva] = true;
-  renderParticLinhaChips();
-  atualizarBtnSalvar();
+  setLoader(true,'Salvando votos…');
+  db.ref(DB_ROOT+'/votos/'+particNome).update(votosLinha)
+    .then(()=>{
+      setLoader(false);
+      particSalvo[particLinhaAtiva]=true;
+      renderParticLinhaChips();
+      atualizarBtnSalvar();
+      toast('Votos salvos!','ok');
+    })
+    .catch(e=>{setLoader(false);toast('Erro: '+e.message,'erro');});
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 // RESULTADO
-// ══════════════════════════════════════════════════════════════════════════
-function rankingDaLinha(linhaId) {
-  const acoes = STATE.acoes.filter(a=>a.linha===linhaId);
-  const votos = STATE.votos || {};
-  return acoes.map(a => {
-    const notasPartic = Object.values(votos).map(v=>v[a.codigo]).filter(Boolean);
-    if (!notasPartic.length) return null;
-    const medias = {};
-    CRITERIOS.forEach(c => {
-      const vals = notasPartic.map(n=>n[c.id]).filter(v=>typeof v==='number'&&v>0);
-      medias[c.id] = vals.length ? +(vals.reduce((s,v)=>s+v,0)/vals.length).toFixed(2) : 0;
+// ══════════════════════════════════════════════════════════════════
+function rankingDaLinha(linhaId){
+  const acoes=Object.values(STATE.acoes||{}).filter(a=>a.status==='aprovada'&&a.linha===linhaId);
+  const votos=STATE.votos||{};
+  return acoes.map(a=>{
+    const notasPartic=Object.values(votos).map(v=>v[a.id]).filter(Boolean);
+    if(!notasPartic.length)return null;
+    const medias={};
+    CRITERIOS.forEach(c=>{
+      const vals=notasPartic.map(n=>n[c.id]).filter(v=>typeof v==='number'&&v>0);
+      medias[c.id]=vals.length?+(vals.reduce((s,v)=>s+v,0)/vals.length).toFixed(2):0;
     });
-    return { ...a, medias, nota: calcNota(medias), nVotos: notasPartic.length };
-  })
-  .filter(Boolean)
-  .filter(a=>a.nota!==null)
-  .sort((a,b)=>b.nota-a.nota||(b.medias.IMP-a.medias.IMP));
+    return{...a,medias,nota:calcNota(medias),nVotos:notasPartic.length};
+  }).filter(Boolean).filter(a=>a.nota!==null).sort((a,b)=>b.nota-a.nota||(b.medias.IMP-a.medias.IMP));
 }
 
-function renderResultado() {
-  const totalPartic = new Set(Object.keys(STATE.votos||{})).size;
-  const badge = document.getElementById('res-partic-badge');
-  if (badge) badge.textContent = `👥 ${totalPartic} participantes`;
+function renderResultado(){
+  const totalPartic=new Set(Object.keys(STATE.votos||{})).size;
+  const badge=document.getElementById('res-partic-badge');
+  if(badge)badge.textContent=`👥 ${totalPartic} participantes`;
 
-  const chips = document.getElementById('res-linha-chips');
-  if (!chips) return;
-  chips.innerHTML = LINHAS.map(l => {
-    const r = rankingDaLinha(l.id);
-    const ativo = l.id===resLinhaAtiva;
-    return `<button style="padding:8px 14px;border-radius:8px;border:none;white-space:nowrap;
+  const chips=document.getElementById('res-linha-chips');
+  if(!chips)return;
+  chips.innerHTML=LINHAS.map(l=>{
+    const r=rankingDaLinha(l.id);
+    const ativo=l.id===resLinhaAtiva;
+    return`<button style="padding:8px 14px;border-radius:8px;border:none;white-space:nowrap;
       background:${ativo?'#F2B400':'#2A2A2A'};color:${ativo?'#1A1A1A':'#AAA'};
-      font-weight:700;font-size:13px;cursor:pointer"
+      font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0"
       onclick="setResLinha('${l.id}')">
       ${l.emoji} ${l.nome.split(' ')[0]}
       ${r[0]?`<span style="margin-left:6px;opacity:.7;font-weight:400">${r[0].nota}</span>`:''}
     </button>`;
   }).join('');
 
-  const l = LINHAS.find(x=>x.id===resLinhaAtiva);
-  const tituloEl = document.getElementById('res-linha-titulo');
-  if (tituloEl) tituloEl.textContent = `${l.emoji} ${l.nome}`;
+  const l=LINHAS.find(x=>x.id===resLinhaAtiva);
+  const titEl=document.getElementById('res-linha-titulo');
+  if(titEl)titEl.textContent=`${l.emoji} ${l.nome}`;
 
-  const ranking = rankingDaLinha(resLinhaAtiva);
-  const exibir = resMostrarTodas ? ranking : ranking.slice(0,5);
+  const ranking=rankingDaLinha(resLinhaAtiva);
+  const exibir=resMostrarTodas?ranking:ranking.slice(0,5);
 
-  const btnVerTodas = document.getElementById('btn-ver-todas');
-  if (ranking.length > 5) {
-    btnVerTodas.style.display = '';
-    btnVerTodas.textContent = resMostrarTodas ? 'Ver apenas Top 5' : `Ver todas (${ranking.length})`;
-  } else if (btnVerTodas) { btnVerTodas.style.display = 'none'; }
+  const btnVer=document.getElementById('btn-ver-todas');
+  if(ranking.length>5){
+    btnVer.style.display='';
+    btnVer.textContent=resMostrarTodas?'Ver apenas Top 5':`Ver todas (${ranking.length})`;
+  } else if(btnVer)btnVer.style.display='none';
 
-  const lista = document.getElementById('res-ranking-lista');
-  if (!lista) return;
-  if (!ranking.length) {
-    lista.innerHTML = `<div class="card" style="text-align:center;padding:48px;color:#AAA">
+  const lista=document.getElementById('res-ranking-lista');
+  if(!lista)return;
+  if(!ranking.length){
+    lista.innerHTML=`<div class="card" style="text-align:center;padding:48px;color:#AAA">
       <div style="font-size:40px;margin-bottom:12px">📭</div>
       Nenhum voto registrado para esta linha ainda.
     </div>`;
   } else {
-    const medalClasses = ['rank-1','rank-2','rank-3','rank-n'];
-    lista.innerHTML = exibir.map((a,i) => {
-      const t = tierInfo(a.nota);
-      const isTop3 = i < 3;
-      return `<div class="card" style="margin-bottom:12px;border:2px solid ${isTop3?'#F2B400':'transparent'};background:${isTop3?'#FFF8DC':'#fff'}">
+    const medalCls=['rank-1','rank-2','rank-3','rank-n'];
+    lista.innerHTML=exibir.map((a,i)=>{
+      const t=tierInfo(a.nota);
+      const isTop3=i<3;
+      return`<div class="card" style="margin-bottom:12px;border:2px solid ${isTop3?'#F2B400':'transparent'};background:${isTop3?'#FFF8DC':'#fff'}">
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <div class="rank-medal ${medalClasses[Math.min(i,3)]}">${i+1}</div>
+          <div class="rank-medal ${medalCls[Math.min(i,3)]}">${i+1}</div>
           <div style="flex:1;min-width:0">
             <div class="flex gap-8 items-center" style="margin-bottom:4px;flex-wrap:wrap">
-              <span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${a.codigo}</span>
-              ${a.grupo?`<span class="badge badge-sm badge-gray">👥 ${esc(a.grupo)}</span>`:''}
+              ${a.codigo?`<span class="badge badge-sm" style="background:#FFF8DC;color:#1A1A1A">${esc(a.codigo)}</span>`:''}
+              <span class="badge badge-sm badge-gray">👥 ${esc(a.grupoNome||'')}</span>
               <span style="font-size:12px;color:#999">💬 ${a.nVotos} votos</span>
             </div>
             <div style="font-weight:700;font-size:15px;margin-bottom:8px">${esc(a.acao)}</div>
@@ -1324,7 +1348,7 @@ function renderResultado() {
             </div>
           </div>
           <div style="text-align:center;flex-shrink:0">
-            <div style="font-size:32px;font-weight:900;color:#F2B400;line-height:1">${a.nota}</div>
+            <div style="font-size:32px;font-weight:900;color:var(--gold);line-height:1">${a.nota}</div>
             <div style="font-size:10px;color:#888;margin-top:2px">nota final</div>
             ${t?`<div style="margin-top:6px;font-size:11px;font-weight:700;color:${t.color}">${t.label}</div>`:''}
           </div>
@@ -1333,33 +1357,18 @@ function renderResultado() {
     }).join('');
   }
 
-  const rodape = document.getElementById('res-pesos-rodape');
-  if (rodape) rodape.innerHTML =
-    `<strong style="color:#1A1A1A">Pesos utilizados:</strong> ` +
+  const rodape=document.getElementById('res-pesos-rodape');
+  if(rodape)rodape.innerHTML=`<strong style="color:#1A1A1A">Pesos:</strong> `+
     CRITERIOS.map(c=>`${c.label} ${Math.round((STATE.pesos[c.id]||0)*100)}%`).join(' · ');
 }
 
-function setResLinha(id) { resLinhaAtiva = id; resMostrarTodas = false; renderResultado(); }
-function toggleVerTodas() { resMostrarTodas = !resMostrarTodas; renderResultado(); }
+function setResLinha(id){resLinhaAtiva=id;resMostrarTodas=false;renderResultado();}
+function toggleVerTodas(){resMostrarTodas=!resMostrarTodas;renderResultado();}
 
-// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════════════════════════════════════
-const FIREBASE_CFG_EMBUTIDO = {
-  apiKey:            "AIzaSyD-aejWwZXpxPyTljQ0q5l2rVx-JGZ3NdM",
-  authDomain:        "cpe-convencao-2026.firebaseapp.com",
-  databaseURL:       "https://cpe-convencao-2026-default-rtdb.firebaseio.com",
-  projectId:         "cpe-convencao-2026",
-  storageBucket:     "cpe-convencao-2026.firebasestorage.app",
-  messagingSenderId: "489052899313",
-  appId:             "1:489052899313:web:490d74141a9434f72f6650"
-};
-
-(function init() {
-  setLoader(true, 'Conectando ao Firebase CPE…');
-  // Sempre usa as credenciais embutidas; ignora localStorage
-  iniciarFirebase(FIREBASE_CFG_EMBUTIDO);
-})();
+// ══════════════════════════════════════════════════════════════════
+iniciarFirebase();
 </script>
 </body>
 </html>
